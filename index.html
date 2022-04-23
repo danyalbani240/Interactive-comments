@@ -13,26 +13,35 @@
     <title>Vite App</title>
   </head>
   <body class="font-rubik">
-    <div class="container py-5 flex flex-col">
+    <div class="container py-5 mx-auto flex flex-col">
       <div class="flex flex-col mx-auto w-11/12 my-2">
-        <div class="bg-white h-60 rounded">
-          <div
-            class="flex items-center justify-around pr-20 mt-3 text-gray-500"
-          >
+        <div
+          class="bg-white flex flex-col justify-evenly h-60 md:h-40 rounded px-5 max-w-3xl"
+        >
+          <div class="flex items-center pr-20 mt-3 text-gray-500">
             <img
               class="w-9 h-9"
               src="./images/avatars/image-amyrobson.webp"
               alt="amyrobson"
             />
-            <span class="font-bold text-gray-900">amyrobson</span>
+            <span class="font-bold text-gray-900 flex-1 text-center"
+              >amyrobson</span
+            >
             <span class="text-sm">1 month ago</span>
+            <div class="text-purple-700 cursor-pointer">
+              <img
+                src="./images/icon-reply.svg"
+                class="w-4 mr-1 inline-block align-middle"
+                alt="reply"
+              /><span class="inline-block font-bold">Reply</span>
+            </div>
           </div>
-          <p class="px-5 mt-3 text-gray-500">
+          <p class="mt-3 text-gray-500">
             Impressive!Though it seems the drag feature could be improved. But
             overall it looks incredible. You've nailed the design and
             responsiveness at various breakpoints works really well.
           </p>
-          <div class="flex justify-between px-5 mt-2 items-center">
+          <div class="flex justify-between mt-2 md:hidden items-center">
             <div
               class="bg-purple-50 w-20 h-9 rounded flex items-center justify-evenly"
             >
@@ -55,24 +64,26 @@
         </div>
       </div>
       <div class="flex flex-col mx-auto w-11/12 my-2">
-        <div class="bg-white h-60 rounded">
-          <div
-            class="flex items-center justify-around pr-20 mt-3 text-gray-500"
-          >
+        <div
+          class="bg-white h-60 rounded flex px-5 flex-col justify-evenly max-w-3xl md:h-40"
+        >
+          <div class="flex items-center pr-20 mt-3 text-gray-500">
             <img
               class="w-9 h-9"
               src="./images/avatars/image-amyrobson.webp"
               alt="amyrobson"
             />
-            <span class="font-bold text-gray-900">amyrobson</span>
+            <span class="font-bold text-gray-900 flex-1 text-center"
+              >amyrobson</span
+            >
             <span class="text-sm">1 month ago</span>
           </div>
-          <p class="px-5 mt-3 text-gray-500">
+          <p class="mt-3 text-gray-500">
             Impressive!Though it seems the drag feature could be improved. But
             overall it looks incredible. You've nailed the design and
             responsiveness at various breakpoints works really well.
           </p>
-          <div class="flex justify-between px-5 mt-2 items-center">
+          <div class="flex justify-between mt-2 md:hidden items-center">
             <div
               class="bg-purple-50 w-20 h-9 rounded flex items-center justify-evenly"
             >
@@ -96,26 +107,28 @@
         <div
           class="flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5"
         >
-          <div class="bg-white ml-2 h-64 mb-2 rounded">
-            <div
-              class="flex items-center justify-around pr-20 mt-3 text-gray-500"
-            >
+          <div
+            class="bg-white px-5 flex flex-col justify-evenly ml-2 h-64 mb-2 rounded"
+          >
+            <div class="flex items-center pr-20 mt-3 text-gray-500">
               <img
                 class="w-9 h-9"
                 src="./images/avatars/image-amyrobson.webp"
                 alt="amyrobson"
               />
 
-              <span class="font-bold text-gray-900">amyrobson</span>
+              <span class="font-bold text-gray-900 flex-1 text-center"
+                >amyrobson</span
+              >
 
               <span class="text-sm">1 month ago</span>
             </div>
-            <p class="px-5 mt-3 text-gray-500">
+            <p class="mt-3 text-gray-500">
               Impressive!Though it seems the drag feature could be improved. But
               overall it looks incredible. You've nailed the design and
               responsiveness at various breakpoints works really well.
             </p>
-            <div class="flex justify-between px-5 mt-2 items-center">
+            <div class="flex justify-between mt-2 items-center">
               <div
                 class="bg-purple-50 w-20 h-9 rounded flex items-center justify-evenly"
               >
@@ -140,28 +153,30 @@
               </div>
             </div>
           </div>
-          <div class="bg-white ml-2 my-2 h-64 rounded">
-            <div
-              class="flex items-center justify-around pr-14 mt-3 text-gray-500"
-            >
+          <div
+            class="bg-white ml-2 my-2 px-5 flex flex-col justify-evenly h-64 rounded"
+          >
+            <div class="flex items-center pr-14 mt-3 text-gray-500">
               <img
                 class="w-9 h-9"
                 src="./images/avatars/image-amyrobson.webp"
                 alt="amyrobson"
               />
-              <span class="font-bold text-gray-900">amyrobson</span>
+              <span class="font-bold text-gray-900 flex-1 text-center"
+                >amyrobson</span
+              >
               <span
                 class="text-white bg-purple-700 class rounded text-sm px-1 font-light"
                 >You</span
               >
               <span class="text-sm">1 month ago</span>
             </div>
-            <p class="px-5 mt-3 text-gray-500">
+            <p class="mt-3 text-gray-500">
               Impressive!Though it seems the drag feature could be improved. But
               overall it looks incredible. You've nailed the design and
               responsiveness at various breakpoints works really well.
             </p>
-            <div class="flex justify-between px-5 mt-2 items-center">
+            <div class="flex justify-between mt-2 items-center">
               <div
                 class="bg-purple-50 w-20 h-9 rounded flex items-center justify-evenly"
               >
@@ -221,11 +236,11 @@
       </div>
     </div>
     <div
-      class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-44 bg-white rounded reply-popup p-4"
+      class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-44 bg-white rounded reply-popup p-4 hidden md:hidden"
     >
       <h2 class="text-xl font-bold">Reply</h2>
       <textarea
-        class="w-full h-20 border-gray-200 focus:border-gray-400 outline-none rounded px-4 py-2 border-2 resize-none my-3 hidden md:hidden"
+        class="w-full h-20 border-gray-200 focus:border-gray-400 outline-none rounded px-4 py-2 border-2 resize-none my-3"
         placeholder="Reply Text"
       ></textarea>
       <div class="flex justify-between">
