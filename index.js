@@ -10,7 +10,7 @@ fetch("http://localhost:3000/currentUser")
 let data = null;
 fetch("http://localhost:3000/comments")
   .then((res) => res.json())
-  .then((res) => loadComments(res));
+  .then((res) => loadComments(res.reverse()));
 
 // adding data on screen
 function loadComments(comments) {
@@ -26,7 +26,7 @@ function createCommentElement(commentData) {
   } else {
     let commentElement = document.createElement("div");
     commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
-    console.log(commentData);
+
     commentElement.innerHTML = `<div class="flex items-center bg-white rounded">
   <div
     class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -88,14 +88,16 @@ function createCommentElement(commentData) {
   </div>
 </div>`;
     if (commentData.replies !== []) {
-      createReplyElements(commentData.replies);
+      let replies = createReplyElements(commentData.replies);
+      commentElement.appendChild(replies);
     }
+    document.querySelector("#container").prepend(commentElement);
   }
 }
 function createUserCommentElement(commentData) {
   let commentElement = document.createElement("div");
   commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
-  console.log(commentData);
+
   commentElement.innerHTML = `<div class="flex items-center bg-white rounded">
   <div
     class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -247,9 +249,10 @@ function createReplyElements(repliesData) {
       </div>
     </div>
   </div>`;
+      repliesContainerElement.appendChild(replyElement);
     }
-    repliesContainerElement.appendChild(replyElement);
   });
+  return repliesContainerElement;
 }
 
 function createUserReplyElement(replyData) {
