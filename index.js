@@ -20,6 +20,7 @@ function loadComments(comments) {
 }
 
 function createCommentElement(commentData) {
+  //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
     createUserCommentElement(commentData);
   } else {
