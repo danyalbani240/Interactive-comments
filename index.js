@@ -3,6 +3,10 @@
 //3-adding events for reply delete and ...
 
 // Getting Data From The Api
+let user;
+fetch("http://localhost:3000/currentUser")
+  .then((res) => res.json())
+  .then((data) => (user = data.username));
 let data = null;
 fetch("http://localhost:3000/comments")
   .then((res) => res.json())
@@ -11,20 +15,23 @@ fetch("http://localhost:3000/comments")
 // adding data on screen
 function loadComments(comments) {
   comments.forEach((comment) => {
-    createComment(comment);
+    createCommentElement(comment);
   });
 }
 
-function createComment(commentData) {
-  let comment = document.createElement("div");
-  comment.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
-  console.log(commentData);
-  comment.innerHTML = `<div class="flex items-center bg-white rounded">
+function createCommentElement(commentData) {
+  if (commentData.user.username === user) {
+    createUserCommentElement(commentData);
+  } else {
+    let commentElement = document.createElement("div");
+    commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
+    console.log(commentData);
+    commentElement.innerHTML = `<div class="flex items-center bg-white rounded">
   <div
     class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
   >
     <img src="./images/icon-plus.svg" class="cursor-pointer" alt="" />
-    <span class="text-purple-700 font-bold">12</span>
+    <span class="text-purple-700 font-bold">${commentData.score}</span>
     <img class="cursor-pointer" src="./images/icon-minus.svg" alt="" />
   </div>
   <div
@@ -79,5 +86,84 @@ function createComment(commentData) {
     </div>
   </div>
 </div>`;
-  console.log(comment);
+  }
+}
+function createUserCommentElement(commentData) {
+  let commentElement = document.createElement("div");
+  commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
+  console.log(commentData);
+  commentElement.innerHTML = `<div class="flex items-center bg-white rounded">
+  <div
+    class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
+  >
+    <img src="./images/icon-plus.svg" class="cursor-pointer" alt="" />
+    <span class="text-purple-700 font-bold">${commentData.score}</span>
+    <img class="cursor-pointer" src="./images/icon-minus.svg" alt="" />
+  </div>
+  <div
+    class="bg-white flex flex-col justify-evenly h-60 md:h-40 rounded px-5 max-w-3xl"
+  >
+    <div class="flex items-center pr-20 md:pr-0 mt-3 text-gray-500">
+      <img
+        class="w-9 h-9 mr-2"
+        src="${commentData.user.image.png}"
+        alt="${commentData.user.username}"
+      />
+      <span class="font-bold mr-2 text-gray-900 text-center"
+        >${commentData.user.username}</span
+      >
+      <span
+        class="text-white bg-purple-700 mr-2 class rounded text-sm px-1 font-light"
+        >You</span
+      >
+      <span class="text-sm">${commentData.createdAt}</span>
+      <div
+        class="text-purple-700 mx-2 cursor-pointer flex-1 justify-center hidden md:flex items-center"
+      >
+        <img class="mx-2" src="./images/icon-delete.svg" alt="delete" />
+        <span class="text-red-600">Delete</span>
+      </div>
+      <div
+        class="text-purple-700 cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
+      >
+        <img class="mx-2" src="./images/icon-edit.svg" alt="edit" />
+        <span class="text-purple-600">Edit</span>
+      </div>
+    </div>
+    <p class="mt-3 text-gray-500 md:mt-0">
+    ${commentData.content}
+    </p>
+    <div class="flex justify-between mt-2 md:hidden items-center">
+      <div
+        class="bg-purple-50 w-20 h-9 rounded flex items-center justify-evenly"
+      >
+        <img
+          src="./images/icon-plus.svg"
+          class="cursor-pointer"
+          alt=""
+        />
+        <span class="text-purple-700 font-bold">${commentData.score}</span>
+        <img
+          class="cursor-pointer"
+          src="./images/icon-minus.svg"
+          alt=""
+        />
+      </div>
+      <div class="flex flex-1 justify-evenly">
+        <div class="flex items-center cursor-pointer">
+          <img
+            class="mx-2"
+            src="./images/icon-delete.svg"
+            alt="delete"
+          />
+          <span class="text-red-600">Delete</span>
+        </div>
+        <div class="flex items-center cursor-pointer">
+          <img class="mx-2" src="./images/icon-edit.svg" alt="edit" />
+          <span class="text-purple-600">Edit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
 }
