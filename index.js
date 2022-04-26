@@ -87,7 +87,7 @@ function createCommentElement(commentData) {
     </div>
   </div>
 </div>`;
-    if (commentData.replies !== []) {
+    if (commentData.replies.length !== 0) {
       let replies = createReplyElements(commentData.replies);
       commentElement.appendChild(replies);
     }
