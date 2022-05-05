@@ -1,9 +1,6 @@
-//1-getting data
-//2-adding the comments on screen
-//3-adding events for reply delete and ...
-
-// Getting Data From The Api
 let user;
+let currentComment = null;
+
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
   .then((data) => (user = data.username));
@@ -49,13 +46,13 @@ function createCommentElement(commentData) {
       >
       <span class="text-sm">${commentData.createdAt}</span>
       <div
-        class="text-purple-700 cursor-pointer flex-1 text-right hidden md:block"
+        class="text-purple-700 cursor-pointer flex-1 text-right hidden md:block reply-el"
       >
         <img
           src="./images/icon-reply.svg"
           class="w-4 mr-1 inline-block align-middle"
           alt="reply"
-        /><span class="inline-block font-bold">Reply</span>
+        /><span class="inline-block font-bold ">Reply</span>
       </div>
     </div>
     <p class="mt-3 text-gray-500 md:mt-0">
@@ -77,22 +74,29 @@ function createCommentElement(commentData) {
           alt=""
         />
       </div>
-      <div class="text-purple-700 cursor-pointer">
+      <div class="text-purple-700 cursor-pointer reply-el">
         <img
           src="./images/icon-reply.svg"
           class="w-4 mr-1 inline-block align-middle"
           alt="reply"
-        /><span class="inline-block font-bold">Reply</span>
+        /><span class="inline-block font-bold ">Reply</span>
       </div>
     </div>
   </div>
 </div>`;
+    commentElement.classList.add(`comment${Math.random()}`);
     if (commentData.replies.length !== 0) {
       let replies = createReplyElements(commentData.replies);
       commentElement.appendChild(replies);
     }
     document.querySelector("#container").prepend(commentElement);
   }
+  document.querySelectorAll(".reply-el").forEach((element) => {
+    element.addEventListener("click", () => {
+      currentComment =
+        element.parentElement.parentElement.parentElement.parentElement;
+    });
+  });
 }
 function createUserCommentElement(commentData) {
   let commentElement = document.createElement("div");
