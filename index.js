@@ -1,5 +1,4 @@
 let user;
-let currentComment = null;
 
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
@@ -15,7 +14,7 @@ function loadComments(comments) {
     createCommentElement(comment);
   });
 }
-
+// create Comment Element On first Load
 function createCommentElement(commentData) {
   //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
@@ -93,8 +92,10 @@ function createCommentElement(commentData) {
   }
   document.querySelectorAll(".reply-el").forEach((element) => {
     element.addEventListener("click", () => {
+      console.log(1);
       currentComment =
         element.parentElement.parentElement.parentElement.parentElement;
+      createReplyBox(element);
     });
   });
 }
@@ -346,4 +347,39 @@ function createUserReplyElement(replyData) {
               </div>
             </div>`;
   return replyElement;
+}
+function createReplyBox() {
+  let replyBox = document.createElement("div");
+  replyBox.className =
+    "bg-white py-4 mx-auto rounded flex  w-full mt-5 items-center max-w-3xl";
+
+  replyBox.innerHTML = `
+  <img
+            class="w-9 h-9 mx-auto"
+            src="./images/avatars/image-juliusomo.png"
+            alt="account owner image"
+          />
+  <textarea
+         
+          name="reply"
+          class="rounded border-2 w-10/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2"
+          id=""
+          cols="20"
+          rows="4"
+        >@${
+          currentComment.getElementsByClassName(
+            "font-bold mr-2 text-gray-900 text-center"
+          )[0].innerText
+        }</textarea>
+        
+          
+          <button
+            class="text-white bg-purple-700 rounded px-4 py-2 text-sm h-10 font-bold mx-auto"
+          >
+            Send
+          </button>
+       `;
+  currentComment
+    .getElementsByClassName("flex items-center bg-white rounded")[0]
+    .after(replyBox);
 }
