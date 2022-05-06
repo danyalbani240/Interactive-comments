@@ -89,16 +89,13 @@ function createCommentElement(commentData) {
       commentElement.appendChild(replies);
     }
     document.querySelector("#container").prepend(commentElement);
-  }
-  document.querySelectorAll(".reply-el").forEach((element) => {
-    element.addEventListener("click", () => {
-      console.log(1);
-      currentComment =
-        element.parentElement.parentElement.parentElement.parentElement;
-      createReplyBox(element);
+    commentElement.querySelector(".reply-el").addEventListener("click", () => {
+      currentComment = commentElement;
+      createReplyBox(commentElement.querySelector(".reply-el"));
     });
-  });
+  }
 }
+
 function createUserCommentElement(commentData) {
   let commentElement = document.createElement("div");
   commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
