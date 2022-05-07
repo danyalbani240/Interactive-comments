@@ -85,7 +85,7 @@ function createCommentElement(commentData) {
   </div>
 </div>`;
     if (commentData.replies.length !== 0) {
-      let replies = createReplyElements(commentData.replies);
+      let replies = createReplyElements(commentData.replies, commentData);
       commentElement.appendChild(replies);
     }
     document.querySelector("#container").prepend(commentElement);
@@ -103,7 +103,7 @@ function createCommentElement(commentData) {
       });
   }
 }
-
+//When User Creates Comment
 function createUserCommentElement(commentData) {
   let commentElement = document.createElement("div");
   commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
@@ -184,13 +184,13 @@ function createUserCommentElement(commentData) {
 </div>`;
 }
 
-function createReplyElements(repliesData) {
+function createReplyElements(repliesData, commentData) {
   let repliesContainerElement = document.createElement("div");
   repliesContainerElement.classList =
     "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
   repliesData.forEach((replyData) => {
     if (replyData.user.username === user) {
-      let replyElement = createUserReplyElement(replyData);
+      let replyElement = createUserReplyElement(replyData, commentData);
       repliesContainerElement.appendChild(replyElement);
     } else {
       let replyElement = document.createElement("div");
@@ -265,7 +265,7 @@ function createReplyElements(repliesData) {
   return repliesContainerElement;
 }
 
-function createUserReplyElement(replyData) {
+function createUserReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
   replyElement.classList = "flex bg-white my-2 items-center";
   replyElement.innerHTML = `
@@ -300,7 +300,7 @@ function createUserReplyElement(replyData) {
                 <span class="text-sm">${replyData.createdAt}</span>
 
                 <div
-                  class="text-purple-700 mx-2 cursor-pointer flex-1 justify-center hidden md:flex items-center"
+                  class="text-purple-700 mx-2  delete-button-mob cursor-pointer flex-1 justify-center hidden md:flex items-center"
                 >
                   <img
                     class="mx-2"
@@ -336,13 +336,13 @@ function createUserReplyElement(replyData) {
                   />
                 </div>
                 <div class="flex flex-1 justify-evenly">
-                  <div class="flex items-center cursor-pointer">
+                  <div class="flex items-center delete-button cursor-pointer">
                     <img
                       class="mx-2"
                       src="./images/icon-delete.svg"
                       alt="delete"
                     />
-                    <span class="text-red-600">Delete</span>
+                    <span class="text-red-600 ">Delete</span>
                   </div>
                   <div class="flex items-center cursor-pointer">
                     <img class="mx-2" src="./images/icon-edit.svg" alt="edit" />
@@ -351,6 +351,14 @@ function createUserReplyElement(replyData) {
                 </div>
               </div>
             </div>`;
+  replyElement.querySelector(".delete-button").addEventListener("click", () => {
+    replyElement.remove();
+  });
+  replyElement
+    .querySelector(".delete-button-mob")
+    .addEventListener("click", () => {
+      replyElement.remove();
+    });
   return replyElement;
 }
 function createReplyBox(commentData) {
@@ -429,11 +437,11 @@ function createNewReplyElement(replyData, commentData) {
     let commentsContainerElement = document.createElement("div");
     commentsContainerElement.className =
       "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
-    let replyElement = createUserReplyElement(replyData);
+    let replyElement = commentData(replyData, commentData);
     commentsContainerElement.append(replyElement);
     currentComment.append(commentsContainerElement);
   } else {
-    let replyElement = createUserReplyElement(replyData);
+    let replyElement = createUserReplyElement(replyData, commentData);
     currentComment.querySelector(".comments-container").append(replyElement);
   }
 }
