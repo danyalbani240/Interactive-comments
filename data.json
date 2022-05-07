@@ -19,21 +19,7 @@
         },
         "username": "amyrobson"
       },
-      "replies": [
-        {
-          "content": " 123",
-          "createdAt": "1 week ago",
-          "score": 0,
-          "replyingTo": "amyrobson",
-          "user": {
-            "image": {
-              "png": "./images/avatars/image-juliusomo.png",
-              "webp": "./images/avatars/image-juliusomo.png"
-            },
-            "username": "juliusomo"
-          }
-        }
-      ]
+      "replies": []
     },
     {
       "id": 2,
