@@ -1,6 +1,6 @@
 let user;
 let currentComment = null;
-
+let currentUserCommentData = null;
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
   .then((data) => (user = data.username));
@@ -352,12 +352,46 @@ function createUserReplyElement(replyData, commentData) {
               </div>
             </div>`;
   replyElement.querySelector(".delete-button").addEventListener("click", () => {
-    replyElement.remove();
+    if (currentUserCommentData == null) {
+      currentUserCommentData = commentData;
+    } else {
+      replyElement.remove();
+      let index = currentUserCommentData.replies.findIndex(
+        (element) => element.id === replyData.id
+      );
+      currentUserCommentData.replies.splice(index, 1);
+      fetch("http://localhost:3000/comments/" + commentData.id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          replies: currentUserCommentData.replies,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+    }
   });
   replyElement
     .querySelector(".delete-button-mob")
     .addEventListener("click", () => {
-      replyElement.remove();
+      if (currentUserCommentData == null) {
+        currentUserCommentData = commentData;
+      } else {
+        replyElement.remove();
+        let index = currentUserCommentData.replies.findIndex(
+          (element) => element.id === replyData.id
+        );
+        currentUserCommentData.replies.splice(index, 1);
+        fetch("http://localhost:3000/comments/" + commentData.id, {
+          method: "PATCH",
+          body: JSON.stringify({
+            replies: currentUserCommentData.replies,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+      }
     });
   return replyElement;
 }
@@ -398,8 +432,9 @@ function createReplyBox(commentData) {
     .after(replyBox);
   console.log(replyBox.querySelector(".send-button"));
   replyBox.querySelector(".send-button").addEventListener("click", () => {
-    addNewReply(commentData, replyBox.querySelector("textarea").value);
     replyBox.remove();
+
+    return addNewReply(commentData, replyBox.querySelector("textarea").value);
   });
 }
 function addNewReply(commentData, text) {
@@ -428,8 +463,11 @@ function addNewReply(commentData, text) {
   })
     .then((res) => res.json())
     .catch((e) => console.log(e));
-
   createNewReplyElement(newReply, commentData);
+  currentUserCommentData = {
+    ...commentData,
+    replies: [...commentData.replies, newReply],
+  };
 }
 
 function createNewReplyElement(replyData, commentData) {
@@ -437,7 +475,7 @@ function createNewReplyElement(replyData, commentData) {
     let commentsContainerElement = document.createElement("div");
     commentsContainerElement.className =
       "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
-    let replyElement = commentData(replyData, commentData);
+    let replyElement = createUserReplyElement(replyData, commentData);
     commentsContainerElement.append(replyElement);
     currentComment.append(commentsContainerElement);
   } else {
