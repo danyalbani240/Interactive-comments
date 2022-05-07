@@ -1,4 +1,5 @@
 let user;
+let currentComment = null;
 
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
@@ -98,7 +99,7 @@ function createCommentElement(commentData) {
       .querySelector(".reply-mobile")
       .addEventListener("click", () => {
         currentComment = commentElement;
-        createReplyBox(commentElement.querySelector(".reply-el"));
+        createReplyBox();
       });
   }
 }
@@ -374,11 +375,11 @@ function createReplyBox() {
           currentComment.getElementsByClassName(
             "font-bold mr-2 text-gray-900 text-center"
           )[0].innerText
-        }</textarea>
+        },</textarea>
         
           
           <button
-            class="text-white bg-purple-700 rounded px-4 py-2 text-sm h-10 font-bold mx-auto"
+            class="text-white bg-purple-700 rounded px-4 py-2 text-sm h-10 font-bold mx-auto send-button"
           >
             Send
           </button>
@@ -386,4 +387,7 @@ function createReplyBox() {
   currentComment
     .getElementsByClassName("flex items-center bg-white rounded")[0]
     .after(replyBox);
+  replyBox.querySelector(".send-button").addEventListener("click", () => {
+    console.log(replyBox.querySelector("textarea").value.split(",")[1]);
+  });
 }
