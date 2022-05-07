@@ -92,7 +92,7 @@ function createCommentElement(commentData) {
 
     commentElement.querySelector(".reply-el").addEventListener("click", () => {
       currentComment = commentElement;
-      createReplyBox(commentElement.querySelector(".reply-el"));
+      createReplyBox(commentData);
     });
 
     commentElement
@@ -232,7 +232,7 @@ function createReplyElements(repliesData) {
       </div>
     </div>
     <p class="mt-3 text-gray-500 md:mt-0">
-      @${replyData.replyingData} ${replyData.content}
+      @${replyData.replyingTo} ${replyData.content}
     </p>
     <div class="flex justify-between mt-2 items-center md:hidden">
       <div
@@ -281,7 +281,7 @@ function createUserReplyElement(replyData) {
               />
             </div>
             <div
-              class="bg-white ml-2 md:ml-0 my-2 px-5 flex flex-col justify-evenly h-64 rounded md:h-40"
+              class="bg-white ml-2 md:ml-0 my-2 md:w-full px-5 flex flex-col justify-evenly h-64 rounded md:h-40"
             >
               <div class="flex items-center md:pr-0 pr-14 mt-3 text-gray-500">
                 <img
@@ -317,7 +317,7 @@ function createUserReplyElement(replyData) {
                 </div>
               </div>
               <p class="mt-3 text-gray-500 md:mt-0">
-              @${replyData.replyingData} ${replyData.content}
+              @${replyData.replyingTo} ${replyData.content}
               </p>
               <div class="flex justify-between mt-2 items-center md:hidden">
                 <div
@@ -388,6 +388,7 @@ function createReplyBox(commentData) {
     .getElementsByClassName("flex items-center bg-white rounded")[0]
     .after(replyBox);
   replyBox.querySelector(".send-button").addEventListener("click", () => {
+    console.log(commentData);
     fetch("http://localhost:3000/comments/" + commentData.id, {
       method: "PATCH",
       body: JSON.stringify({
@@ -408,6 +409,7 @@ function createReplyBox(commentData) {
               },
               username: `${user}`,
             },
+            score: 0,
           },
         ],
       }),
