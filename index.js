@@ -354,6 +354,7 @@ function createUserReplyElement(replyData) {
   return replyElement;
 }
 function createReplyBox(commentData) {
+  console.log("replyBox");
   let replyBox = document.createElement("div");
   replyBox.className =
     "bg-white py-4 mx-auto rounded flex  w-full mt-5 items-center max-w-3xl";
@@ -387,38 +388,52 @@ function createReplyBox(commentData) {
   currentComment
     .getElementsByClassName("flex items-center bg-white rounded")[0]
     .after(replyBox);
+  console.log(replyBox.querySelector(".send-button"));
   replyBox.querySelector(".send-button").addEventListener("click", () => {
-    console.log(commentData);
-    fetch("http://localhost:3000/comments/" + commentData.id, {
-      method: "PATCH",
-      body: JSON.stringify({
-        replies: [
-          ...commentData.replies,
-          {
-            id: +!!commentData.replies.id + 1,
-            content: replyBox.querySelector("textarea").value.split(",")[1],
-            createdAt: "1 week ago",
-            replyingTo: replyBox
-              .querySelector("textarea")
-              .value.split(",")[0]
-              .split("@")[1],
-            user: {
-              image: {
-                png: `./images/avatars/image-${user}.png`,
-                webp: `./images/avatars/image-${user}.web`,
-              },
-              username: `${user}`,
-            },
-            score: 0,
-          },
-        ],
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((res) => res.json())
-      .catch((e) => console.log(e));
+    addNewReply(commentData, replyBox.querySelector("textarea").value);
     replyBox.remove();
   });
+}
+function addNewReply(commentData, text) {
+  const newReply = {
+    id: +!!commentData.replies.id + 1,
+    content: text.split(",")[1],
+    createdAt: "1 week ago",
+    replyingTo: text.split(",")[0].split("@")[1],
+    user: {
+      image: {
+        png: `./images/avatars/image-${user}.png`,
+        webp: `./images/avatars/image-${user}.web`,
+      },
+      username: `${user}`,
+    },
+    score: 0,
+  };
+  fetch("http://localhost:3000/comments/" + commentData.id, {
+    method: "PATCH",
+    body: JSON.stringify({
+      replies: [...commentData.replies, newReply],
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+
+  createNewReplyElement(newReply, commentData);
+}
+
+function createNewReplyElement(replyData, commentData) {
+  if (commentData.replies.length === 0) {
+    let commentsContainerElement = document.createElement("div");
+    commentsContainerElement.className =
+      "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
+    let replyElement = createUserReplyElement(replyData);
+    commentsContainerElement.append(replyElement);
+    currentComment.append(commentsContainerElement);
+  } else {
+    let replyElement = createUserReplyElement(replyData);
+    currentComment.querySelector(".comments-container").append(replyElement);
+  }
 }
