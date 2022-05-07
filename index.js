@@ -99,7 +99,7 @@ function createCommentElement(commentData) {
       .querySelector(".reply-mobile")
       .addEventListener("click", () => {
         currentComment = commentElement;
-        createReplyBox();
+        createReplyBox(commentData);
       });
   }
 }
@@ -353,7 +353,7 @@ function createUserReplyElement(replyData) {
             </div>`;
   return replyElement;
 }
-function createReplyBox() {
+function createReplyBox(commentData) {
   let replyBox = document.createElement("div");
   replyBox.className =
     "bg-white py-4 mx-auto rounded flex  w-full mt-5 items-center max-w-3xl";
@@ -388,6 +388,35 @@ function createReplyBox() {
     .getElementsByClassName("flex items-center bg-white rounded")[0]
     .after(replyBox);
   replyBox.querySelector(".send-button").addEventListener("click", () => {
-    console.log(replyBox.querySelector("textarea").value.split(",")[1]);
+    fetch("http://localhost:3000/comments/" + commentData.id, {
+      method: "PATCH",
+      body: JSON.stringify({
+        replies: [
+          ...commentData.replies,
+          {
+            id: +!!commentData.replies.id + 1,
+            content: replyBox.querySelector("textarea").value.split(",")[1],
+            createdAt: "1 week ago",
+            replyingTo: replyBox
+              .querySelector("textarea")
+              .value.split(",")[0]
+              .split("@")[1],
+            user: {
+              image: {
+                png: `./images/avatars/image-${user}.png`,
+                webp: `./images/avatars/image-${user}.web`,
+              },
+              username: `${user}`,
+            },
+          },
+        ],
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => res.json())
+      .catch((e) => console.log(e));
+    replyBox.remove();
   });
 }
