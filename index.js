@@ -73,7 +73,7 @@ function createCommentElement(commentData) {
           alt=""
         />
       </div>
-      <div class="text-purple-700 cursor-pointer reply-el">
+      <div class="text-purple-700 cursor-pointer reply-el reply-mobile">
         <img
           src="./images/icon-reply.svg"
           class="w-4 mr-1 inline-block align-middle"
@@ -83,16 +83,23 @@ function createCommentElement(commentData) {
     </div>
   </div>
 </div>`;
-    commentElement.classList.add(`comment${Math.random()}`);
     if (commentData.replies.length !== 0) {
       let replies = createReplyElements(commentData.replies);
       commentElement.appendChild(replies);
     }
     document.querySelector("#container").prepend(commentElement);
+
     commentElement.querySelector(".reply-el").addEventListener("click", () => {
       currentComment = commentElement;
       createReplyBox(commentElement.querySelector(".reply-el"));
     });
+
+    commentElement
+      .querySelector(".reply-mobile")
+      .addEventListener("click", () => {
+        currentComment = commentElement;
+        createReplyBox(commentElement.querySelector(".reply-el"));
+      });
   }
 }
 
