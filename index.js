@@ -232,7 +232,7 @@ function createReplyElements(repliesData, commentData) {
       </div>
     </div>
     <p class="mt-3 text-gray-500 md:mt-0">
-      @${replyData.replyingTo} ${replyData.content}
+      @${replyData.replyingTo}, ${replyData.content}
     </p>
     <div class="flex justify-between mt-2 items-center md:hidden">
       <div
@@ -310,14 +310,14 @@ function createUserReplyElement(replyData, commentData) {
                   <span class="text-red-600">Delete</span>
                 </div>
                 <div
-                  class="text-purple-700 cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
+                  class="text-purple-700 edit-button-mob cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
                 >
                   <img class="mx-2" src="./images/icon-edit.svg" alt="edit" />
                   <span class="text-purple-600">Edit</span>
                 </div>
               </div>
-              <p class="mt-3 text-gray-500 md:mt-0">
-              @${replyData.replyingTo} ${replyData.content}
+              <p class="mt-3 text-gray-500 md:mt-0 reply-content">
+              @${replyData.replyingTo}, ${replyData.content}
               </p>
               <div class="flex justify-between mt-2 items-center md:hidden">
                 <div
@@ -344,13 +344,15 @@ function createUserReplyElement(replyData, commentData) {
                     />
                     <span class="text-red-600 ">Delete</span>
                   </div>
-                  <div class="flex items-center cursor-pointer">
+                  <div class="flex items-center edit-button cursor-pointer">
                     <img class="mx-2" src="./images/icon-edit.svg" alt="edit" />
                     <span class="text-purple-600">Edit</span>
                   </div>
                 </div>
               </div>
             </div>`;
+
+  //handle delete
   replyElement.querySelector(".delete-button").addEventListener("click", () => {
     if (currentUserCommentData == null) {
       currentUserCommentData = commentData;
@@ -392,6 +394,32 @@ function createUserReplyElement(replyData, commentData) {
           },
         });
       }
+    });
+  //handle edit
+  replyElement.querySelector(".edit-button").addEventListener("click", () => {
+    console.log(replyElement.querySelector(".reply-content"));
+  });
+  replyElement
+    .querySelector(".edit-button-mob")
+    .addEventListener("click", () => {
+      console.log(replyElement.querySelector(".reply-content").innerText);
+      let editBox = document.querySelector(".edit-reply-box");
+      editBox.classList.toggle("hidden");
+      editBox.querySelector("textarea").value =
+        replyElement.querySelector(".reply-content").innerText;
+      editBox.querySelector(".cancel").addEventListener("click", () => {
+        editBox.classList.add("hidden");
+      });
+      editBox
+        .querySelector("button.send-edit")
+        .addEventListener("click", () => {
+          handleEdit(
+            editBox.querySelector("textarea").value,
+            replyData,
+            commentData,
+            replyElement
+          );
+        });
     });
   return replyElement;
 }
@@ -482,4 +510,26 @@ function createNewReplyElement(replyData, commentData) {
     let replyElement = createUserReplyElement(replyData, commentData);
     currentComment.querySelector(".comments-container").append(replyElement);
   }
+}
+function handleEdit(newText, replyData, commentData, replyElement) {
+  //chenge element locally on screen
+  replyElement.querySelector(".reply-content").innerText = newText;
+  document.querySelector(".edit-reply-box").classList.add("hidden");
+  //fetch the newReply
+  const newReplyData = { ...replyData, content: newText.split(",")[1] };
+  let index = commentData.replies.findIndex(
+    (element) => element.id === replyData.id
+  );
+  let newReplies = commentData.replies;
+  newReplies.splice(index, 1, newReplyData);
+
+  fetch("http://localhost:3000/comments/" + commentData.id, {
+    method: "PATCH",
+    body: JSON.stringify({
+      replies: newReplies,
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
 }
