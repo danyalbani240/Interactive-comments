@@ -1,6 +1,7 @@
 let user;
 let currentComment = null;
 let currentUserCommentData = null;
+let = currentReply = null;
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
   .then((data) => (user = data.username));
@@ -184,18 +185,10 @@ function createUserCommentElement(commentData) {
 </div>`;
 }
 
-function createReplyElements(repliesData, commentData) {
-  let repliesContainerElement = document.createElement("div");
-  repliesContainerElement.classList =
-    "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
-  repliesData.forEach((replyData) => {
-    if (replyData.user.username === user) {
-      let replyElement = createUserReplyElement(replyData, commentData);
-      repliesContainerElement.appendChild(replyElement);
-    } else {
-      let replyElement = document.createElement("div");
-      replyElement.classList = "flex bg-white my-2 items-center";
-      replyElement.innerHTML = `<div
+function createReplyElement(replyData, commentData) {
+  let replyElement = document.createElement("div");
+  replyElement.classList = "flex bg-white my-2 items-center";
+  replyElement.innerHTML = `<div
     class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
   >
     <img src="./images/icon-plus.svg" class="cursor-pointer" alt="" />
@@ -222,11 +215,11 @@ function createReplyElements(repliesData, commentData) {
 
       <span class="text-sm">${replyData.createdAt}</span>
       <div
-        class="text-purple-700 cursor-pointer flex-1 text-right hidden md:block"
+        class="text-purple-700 cursor-pointer reply-button flex-1 text-right hidden md:block"
       >
         <img
           src="./images/icon-reply.svg"
-          class="w-4 mr-1 inline-block align-middle"
+          class="w-4 mr-1 inline-block align-middle "
           alt="reply"
         /><span class="inline-block font-bold">Reply</span>
       </div>
@@ -250,7 +243,7 @@ function createReplyElements(repliesData, commentData) {
           alt=""
         />
       </div>
-      <div class="text-purple-700 cursor-pointer">
+      <div class="text-purple-700 cursor-pointer reply-button">
         <img
           src="./images/icon-reply.svg"
           class="w-4 mr-1 inline-block align-middle"
@@ -259,9 +252,29 @@ function createReplyElements(repliesData, commentData) {
       </div>
     </div>
   </div>`;
+  replyElement.querySelectorAll(".reply-button").forEach((element) => {
+    element.addEventListener("click", () => {
+      replyToReply(replyData);
+      currentReply = replyElement;
+    });
+  });
+  return replyElement;
+}
+
+function createReplyElements(repliesData, commentData) {
+  let repliesContainerElement = document.createElement("div");
+  repliesContainerElement.classList =
+    "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
+  repliesData.forEach((replyData) => {
+    if (replyData.user.username === user) {
+      let replyElement = createUserReplyElement(replyData, commentData);
+      repliesContainerElement.appendChild(replyElement);
+    } else {
+      let replyElement = createReplyElement(replyData, commentData);
       repliesContainerElement.appendChild(replyElement);
     }
   });
+
   return repliesContainerElement;
 }
 
@@ -397,12 +410,25 @@ function createUserReplyElement(replyData, commentData) {
     });
   //handle edit
   replyElement.querySelector(".edit-button").addEventListener("click", () => {
-    console.log(replyElement.querySelector(".reply-content"));
+    let editBox = document.querySelector(".edit-reply-box");
+    editBox.classList.toggle("hidden");
+    editBox.querySelector("textarea").value =
+      replyElement.querySelector(".reply-content").innerText;
+    editBox.querySelector(".cancel").addEventListener("click", () => {
+      editBox.classList.add("hidden");
+    });
+    editBox.querySelector("button.send-edit").addEventListener("click", () => {
+      handleEdit(
+        editBox.querySelector("textarea").value,
+        replyData,
+        commentData,
+        replyElement
+      );
+    });
   });
   replyElement
     .querySelector(".edit-button-mob")
     .addEventListener("click", () => {
-      console.log(replyElement.querySelector(".reply-content").innerText);
       let editBox = document.querySelector(".edit-reply-box");
       editBox.classList.toggle("hidden");
       editBox.querySelector("textarea").value =
@@ -424,7 +450,6 @@ function createUserReplyElement(replyData, commentData) {
   return replyElement;
 }
 function createReplyBox(commentData) {
-  console.log("replyBox");
   let replyBox = document.createElement("div");
   replyBox.className =
     "bg-white py-4 mx-auto rounded flex  w-full mt-5 items-center max-w-3xl";
@@ -458,7 +483,6 @@ function createReplyBox(commentData) {
   currentComment
     .getElementsByClassName("flex items-center bg-white rounded")[0]
     .after(replyBox);
-  console.log(replyBox.querySelector(".send-button"));
   replyBox.querySelector(".send-button").addEventListener("click", () => {
     replyBox.remove();
 
@@ -531,5 +555,18 @@ function handleEdit(newText, replyData, commentData, replyElement) {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
+  });
+}
+function replyToReply(replyData, commentData) {
+  console.log(replyData, commentData);
+  let replyBox = document.querySelector(".reply-popup");
+  replyBox.classList.remove("hidden");
+  replyBox.querySelector("textarea").value = replyData.user.username + ",";
+  replyBox.querySelector(".cancel-button").addEventListener("click", () => {
+    replyBox.classList.add("hidden");
+    //adding locally to comment
+  });
+  replyBox.querySelector(".reply-button").addEventListener("click", () => {
+    replyBox.classList.add("hidden");
   });
 }

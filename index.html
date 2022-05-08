@@ -42,7 +42,7 @@
       </div>
     </div>
     <div
-      class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 md:w-6/12 hidden h-44 bg-white rounded reply-popup p-4 edit-reply-box"
+      class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 md:w-6/12 hidden h-44 bg-white rounded p-4 edit-reply-box"
     >
       <textarea
         class="w-full h-20 border-gray-200 focus:border-gray-400 outline-none rounded px-4 py-2 border-2 resize-none my-3"
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div
-      class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-44 bg-white rounded reply-popup p-4 hidden md:hidden"
+      class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-44 bg-white rounded reply-popup p-4 md:w-5/12 md:h-64 hidden"
     >
       <h2 class="text-xl font-bold">Reply</h2>
       <textarea
@@ -69,10 +69,12 @@
         placeholder="Reply Text"
       ></textarea>
       <div class="flex justify-between">
-        <button class="text-white bg-gray-600 p-2 mt-2 cursor-pointer rounded">
+        <button
+          class="text-white bg-gray-600 p-2 mt-2 cancel-button cursor-pointer rounded"
+        >
           CANCEL</button
         ><button
-          class="text-white bg-purple-600 p-2 mt-2 cursor-pointer rounded"
+          class="text-white reply-button bg-purple-600 p-2 mt-2 cursor-pointer rounded"
         >
           Reply
         </button>
