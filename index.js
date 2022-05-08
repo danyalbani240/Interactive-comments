@@ -232,7 +232,7 @@ function createReplyElements(repliesData, commentData) {
       </div>
     </div>
     <p class="mt-3 text-gray-500 md:mt-0">
-      @${replyData.replyingTo} ${replyData.content}
+      @${replyData.replyingTo}, ${replyData.content}
     </p>
     <div class="flex justify-between mt-2 items-center md:hidden">
       <div
@@ -317,7 +317,7 @@ function createUserReplyElement(replyData, commentData) {
                 </div>
               </div>
               <p class="mt-3 text-gray-500 md:mt-0 reply-content">
-              @${replyData.replyingTo} ${replyData.content}
+              @${replyData.replyingTo}, ${replyData.content}
               </p>
               <div class="flex justify-between mt-2 items-center md:hidden">
                 <div
@@ -515,4 +515,21 @@ function handleEdit(newText, replyData, commentData, replyElement) {
   //chenge element locally on screen
   replyElement.querySelector(".reply-content").innerText = newText;
   document.querySelector(".edit-reply-box").classList.add("hidden");
+  //fetch the newReply
+  const newReplyData = { ...replyData, content: newText.split(",")[1] };
+  let index = commentData.replies.findIndex(
+    (element) => element.id === replyData.id
+  );
+  let newReplies = commentData.replies;
+  newReplies.splice(index, 1, newReplyData);
+
+  fetch("http://localhost:3000/comments/" + commentData.id, {
+    method: "PATCH",
+    body: JSON.stringify({
+      replies: newReplies,
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
 }
