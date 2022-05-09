@@ -1,6 +1,7 @@
 let user;
 let currentComment = null;
 let currentUserCommentData = null;
+let lasCommentId = null;
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
   .then((data) => (user = data.username));
@@ -11,7 +12,8 @@ fetch("http://localhost:3000/comments")
 
 // adding data on screen
 function loadComments(comments) {
-  comments.forEach((comment) => {
+  lasCommentId = comments.reverse()[comments.length - 1].id;
+  comments.reverse().forEach((comment) => {
     createCommentElement(comment);
   });
 }
@@ -135,13 +137,13 @@ function createUserCommentElement(commentData) {
       >
       <span class="text-sm">${commentData.createdAt}</span>
       <div
-        class="text-purple-700 mx-2 cursor-pointer flex-1 justify-center hidden md:flex items-center"
+        class="text-purple-700 mx-2 delete-button cursor-pointer flex-1 justify-center hidden md:flex items-center"
       >
         <img class="mx-2" src="./images/icon-delete.svg" alt="delete" />
         <span class="text-red-600">Delete</span>
       </div>
       <div
-        class="text-purple-700 cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
+        class="text-purple-700 edit-button cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
       >
         <img class="mx-2" src="./images/icon-edit.svg" alt="edit" />
         <span class="text-purple-600">Edit</span>
@@ -167,7 +169,7 @@ function createUserCommentElement(commentData) {
         />
       </div>
       <div class="flex flex-1 justify-evenly">
-        <div class="flex items-center cursor-pointer">
+        <div class="flex items-center delete-button cursor-pointer">
           <img
             class="mx-2"
             src="./images/icon-delete.svg"
@@ -175,7 +177,7 @@ function createUserCommentElement(commentData) {
           />
           <span class="text-red-600">Delete</span>
         </div>
-        <div class="flex items-center cursor-pointer">
+        <div class="flex items-center edit-button cursor-pointer">
           <img class="mx-2" src="./images/icon-edit.svg" alt="edit" />
           <span class="text-purple-600">Edit</span>
         </div>
@@ -183,6 +185,15 @@ function createUserCommentElement(commentData) {
     </div>
   </div>
 </div>`;
+  //handleDelete
+  commentElement.querySelectorAll(".delete-button").forEach((element) => {
+    element.addEventListener("click", () => {
+      commentElement.remove();
+      fetch("http://localhost:3000/comments/" + commentData.id, {
+        method: "DELETE",
+      });
+    });
+  });
   return commentElement;
 }
 
@@ -607,6 +618,7 @@ document
       return;
     } else {
       let newCommentData = {
+        id: ++lasCommentId,
         content: input.value,
         createdAt: "1 day ago",
         score: 0,
@@ -619,6 +631,7 @@ document
         },
         replies: [],
       };
+      console.log(newCommentData, lasCommentId);
       let userNewCommentElement = createUserCommentElement(newCommentData);
       document.querySelector("#container").prepend(userNewCommentElement);
       //fetching data to server
