@@ -1,4 +1,4 @@
-import { user } from "./init";
+import { user, currentComment } from "./init";
 import { loadReplyElements } from "./reply";
 function createCommentElements(commentData) {
   //checking if it's the logged in user comment or not
