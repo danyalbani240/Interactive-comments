@@ -76,7 +76,7 @@ function createCommentElements(commentData) {
     document.querySelector("#container").prepend(commentElement);
 
     commentElement.querySelector(".reply-el").addEventListener("click", () => {
-      currentComment = commentElement;
+      setCurrentComment(commentElement);
       createReplyBox(commentData);
     });
 

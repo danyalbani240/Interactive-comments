@@ -1,5 +1,5 @@
 import "./style.css";
-import { createCommentElements } from "./comment";
+import { createCommentElements, createUserCommentElement } from "./comment";
 let user;
 let currentComment = null;
 let currentUserCommentData = null;

@@ -1,4 +1,10 @@
-import { user, currentComment, currentUserCommentData } from "./init";
+import {
+  user,
+  currentComment,
+  currentUserCommentData,
+  setCurrentComment,
+  setCurrentUserCommentData,
+} from "./init";
 function createReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
   replyElement.classList = "flex bg-white my-2 items-center";
@@ -68,7 +74,7 @@ function createReplyElement(replyData, commentData) {
     </div>`;
   replyElement.querySelectorAll(".reply-button").forEach((element) => {
     element.addEventListener("click", () => {
-      currentComment = replyElement.parentElement.parentElement;
+      setCurrentComment(replyElement.parentElement.parentElement);
 
       replyToReply(replyData, commentData);
     });
@@ -183,7 +189,7 @@ function createUserReplyElement(replyData, commentData) {
   //handle delete
   replyElement.querySelector(".delete-button").addEventListener("click", () => {
     if (currentUserCommentData == null) {
-      currentUserCommentData = commentData;
+      setCurrentUserCommentData(commentData);
     } else {
       replyElement.remove();
       let index = currentUserCommentData.replies.findIndex(
@@ -205,7 +211,7 @@ function createUserReplyElement(replyData, commentData) {
     .querySelector(".delete-button-mob")
     .addEventListener("click", () => {
       if (currentUserCommentData == null) {
-        currentUserCommentData = commentData;
+        setCurrentUserCommentData(commentData);
       } else {
         replyElement.remove();
         let index = currentUserCommentData.replies.findIndex(
@@ -331,10 +337,10 @@ function addNewReply(commentData, text) {
     .then((res) => res.json())
     .catch((e) => console.log(e));
   createNewReplyElement(newReply, commentData);
-  currentUserCommentData = {
+  setCurrentUserCommentData({
     ...commentData,
     replies: [...commentData.replies, newReply],
-  };
+  });
 }
 
 function createNewReplyElement(replyData, commentData) {
