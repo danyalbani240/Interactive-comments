@@ -1,6 +1,6 @@
 import "./style.css";
-import { createCommentElements } from "./comment";
-export let user;
+import { createCommentElements, createUserCommentElement } from "./comment";
+let user;
 let currentComment = null;
 let currentUserCommentData = null;
 let lasCommentId = null;
@@ -59,3 +59,18 @@ document
         .then((data) => console.log(data));
     }
   });
+
+function setCurrentComment(value) {
+  currentComment = value;
+}
+function setCurrentUserCommentData(value) {
+  currentUserCommentData = value;
+}
+export {
+  user,
+  currentComment,
+  currentUserCommentData,
+  lasCommentId,
+  setCurrentComment,
+  setCurrentUserCommentData,
+};

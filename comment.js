@@ -1,5 +1,5 @@
-import { user } from "./init";
-import { loadReplyElements } from "./reply";
+import { user, currentComment, setCurrentComment } from "./init";
+import { loadReplyElements, createReplyBox } from "./reply";
 function createCommentElements(commentData) {
   //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
@@ -76,14 +76,14 @@ function createCommentElements(commentData) {
     document.querySelector("#container").prepend(commentElement);
 
     commentElement.querySelector(".reply-el").addEventListener("click", () => {
-      currentComment = commentElement;
+      setCurrentComment(commentElement);
       createReplyBox(commentData);
     });
 
     commentElement
       .querySelector(".reply-mobile")
       .addEventListener("click", () => {
-        currentComment = commentElement;
+        setCurrentComment(commentElement);
         createReplyBox(commentData);
       });
   }
