@@ -19,7 +19,8 @@ function loadComments(comments) {
 function createCommentElement(commentData) {
   //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
-    createUserCommentElement(commentData);
+    let commentElement = createUserCommentElement(commentData);
+    document.querySelector("#container").prepend(commentElement);
   } else {
     let commentElement = document.createElement("div");
     commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
@@ -117,7 +118,7 @@ function createUserCommentElement(commentData) {
     <img class="cursor-pointer" src="./images/icon-minus.svg" alt="" />
   </div>
   <div
-    class="bg-white flex flex-col justify-evenly h-60 md:h-40 rounded px-5 max-w-3xl"
+    class="bg-white flex flex-col justify-evenly w-full h-60 md:h-40 rounded px-5 max-w-3xl"
   >
     <div class="flex items-center pr-20 md:pr-0 mt-3 text-gray-500">
       <img
@@ -182,6 +183,7 @@ function createUserCommentElement(commentData) {
     </div>
   </div>
 </div>`;
+  return commentElement;
 }
 
 function createReplyElement(replyData, commentData) {
@@ -594,3 +596,41 @@ function replyToReply(replyingToData, commentData) {
     replyBox.classList.add("hidden");
   });
 }
+
+//adding newComment By User
+
+document
+  .querySelector("button.add-new-comment")
+  .addEventListener("click", () => {
+    let input = document.querySelector(".user-new-comment-input");
+    if (input.value === "") {
+      return;
+    } else {
+      let newCommentData = {
+        content: input.value,
+        createdAt: "1 day ago",
+        score: 0,
+        user: {
+          image: {
+            png: `./images/avatars/image-${user}.png`,
+            webp: `./images/avatars/image-${user}.webp`,
+          },
+          username: user,
+        },
+        replies: [],
+      };
+      let userNewCommentElement = createUserCommentElement(newCommentData);
+      document.querySelector("#container").prepend(userNewCommentElement);
+      //fetching data to server
+      fetch("http://localhost:3000/comments", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newCommentData),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+    }
+  });
