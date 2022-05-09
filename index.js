@@ -581,6 +581,16 @@ function replyToReply(replyingToData, commentData) {
     };
     let newReplyElement = createUserReplyElement(newReplyData, commentData);
     currentComment.querySelector(".comments-container").append(newReplyElement);
+    //adding the new replies to database :
+    fetch("http://localhost:3000/comments/" + commentData.id, {
+      method: "PATCH",
+      body: JSON.stringify({
+        replies: [...commentData.replies, newReplyData],
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
     replyBox.classList.add("hidden");
   });
 }
