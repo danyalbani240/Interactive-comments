@@ -149,7 +149,7 @@ function createUserCommentElement(commentData) {
         <span class="text-purple-600">Edit</span>
       </div>
     </div>
-    <p class="mt-3 text-gray-500 md:mt-0">
+    <p class="mt-3 text-gray-500 md:mt-0 content">
     ${commentData.content}
     </p>
     <div class="flex justify-between mt-2 md:hidden items-center">
@@ -191,6 +191,29 @@ function createUserCommentElement(commentData) {
       commentElement.remove();
       fetch("http://localhost:3000/comments/" + commentData.id, {
         method: "DELETE",
+      });
+    });
+  });
+  //handle user edit comment  :
+  commentElement.querySelectorAll(".edit-button").forEach((element) => {
+    element.addEventListener("click", () => {
+      let editReplyBox = document.querySelector(".edit-reply-box ");
+      editReplyBox.classList.remove("hidden");
+      editReplyBox.querySelector("textarea").value =
+        commentElement.querySelector("p.content").innerText;
+      editReplyBox.querySelector(".send-edit").addEventListener("click", () => {
+        fetch("http://localhost:3000/comments/" + commentData.id, {
+          method: "PATCH",
+          body: JSON.stringify({
+            content: editReplyBox.querySelector("textarea").value,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+        commentElement.querySelector("p.content").innerText =
+          editReplyBox.querySelector("textarea").value;
+        editReplyBox.classList.add("hidden");
       });
     });
   });
