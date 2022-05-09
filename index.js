@@ -1,7 +1,6 @@
 let user;
 let currentComment = null;
 let currentUserCommentData = null;
-let = currentReply = null;
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
   .then((data) => (user = data.username));
@@ -254,8 +253,9 @@ function createReplyElement(replyData, commentData) {
   </div>`;
   replyElement.querySelectorAll(".reply-button").forEach((element) => {
     element.addEventListener("click", () => {
-      replyToReply(replyData);
-      currentReply = replyElement;
+      currentComment = replyElement.parentElement.parentElement;
+
+      replyToReply(replyData, commentData);
     });
   });
   return replyElement;
@@ -557,16 +557,30 @@ function handleEdit(newText, replyData, commentData, replyElement) {
     },
   });
 }
-function replyToReply(replyData, commentData) {
-  console.log(replyData, commentData);
+function replyToReply(replyingToData, commentData) {
   let replyBox = document.querySelector(".reply-popup");
   replyBox.classList.remove("hidden");
-  replyBox.querySelector("textarea").value = replyData.user.username + ",";
+  replyBox.querySelector("textarea").value = replyingToData.user.username + ",";
   replyBox.querySelector(".cancel-button").addEventListener("click", () => {
     replyBox.classList.add("hidden");
-    //adding locally to comment
   });
   replyBox.querySelector(".reply-button").addEventListener("click", () => {
+    let newReplyData = {
+      id: commentData.replies[commentData.replies.length - 1].id + 1,
+      content: replyBox.querySelector("textarea").value.split(",")[1],
+      createdAt: "1 days ago",
+      score: 0,
+      replyingTo: replyingToData.user.username,
+      user: {
+        image: {
+          png: `./images/avatars/image-${user}.png`,
+          webp: `./images/avatars/image-${user}.webp`,
+        },
+        username: user,
+      },
+    };
+    let newReplyElement = createUserReplyElement(newReplyData, commentData);
+    currentComment.querySelector(".comments-container").append(newReplyElement);
     replyBox.classList.add("hidden");
   });
 }
