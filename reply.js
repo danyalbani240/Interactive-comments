@@ -1,4 +1,4 @@
-import { user } from "./init";
+import { user, currentComment, currentUserCommentData } from "./init";
 function createReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
   replyElement.classList = "flex bg-white my-2 items-center";

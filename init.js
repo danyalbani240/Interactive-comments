@@ -63,10 +63,14 @@ document
 function setCurrentComment(value) {
   currentComment = value;
 }
+function setCurrentUserCommentData(value) {
+  currentUserCommentData = value;
+}
 export {
   user,
   currentComment,
   currentUserCommentData,
   lasCommentId,
   setCurrentComment,
+  setCurrentUserCommentData,
 };
