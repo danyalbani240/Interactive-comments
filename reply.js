@@ -134,7 +134,7 @@ function createUserReplyElement(replyData, commentData) {
                   <span class="text-sm">${replyData.createdAt}</span>
   
                   <div
-                    class="text-purple-700 mx-2  delete-button-mob cursor-pointer flex-1 justify-center hidden md:flex items-center"
+                    class="text-purple-700 mx-2  delete-button cursor-pointer flex-1 justify-center hidden md:flex items-center"
                   >
                     <img
                       class="mx-2"
@@ -187,36 +187,16 @@ function createUserReplyElement(replyData, commentData) {
               </div>`;
 
   //handle delete
-  replyElement.querySelector(".delete-button").addEventListener("click", () => {
-    if (currentUserCommentData == null) {
-      setCurrentUserCommentData(commentData);
-    } else {
-      replyElement.remove();
-      let index = currentUserCommentData.replies.findIndex(
-        (element) => element.id === replyData.id
-      );
-      currentUserCommentData.replies.splice(index, 1);
-      fetch("http://localhost:3000/comments/" + commentData.id, {
-        method: "PATCH",
-        body: JSON.stringify({
-          replies: currentUserCommentData.replies,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-    }
-  });
-  replyElement
-    .querySelector(".delete-button-mob")
-    .addEventListener("click", () => {
+  for (const element of replyElement.querySelectorAll(".delete-button")) {
+    element.addEventListener("click", () => {
       if (currentUserCommentData == null) {
         setCurrentUserCommentData(commentData);
+        element.click();
       } else {
-        replyElement.remove();
         let index = currentUserCommentData.replies.findIndex(
           (element) => element.id === replyData.id
         );
+        console.log(index, currentUserCommentData);
         currentUserCommentData.replies.splice(index, 1);
         fetch("http://localhost:3000/comments/" + commentData.id, {
           method: "PATCH",
@@ -228,7 +208,10 @@ function createUserReplyElement(replyData, commentData) {
           },
         });
       }
+      replyElement.remove();
     });
+  }
+
   //handle edit
   replyElement.querySelector(".edit-button").addEventListener("click", () => {
     let editBox = document.querySelector(".edit-reply-box");
@@ -311,6 +294,7 @@ function createReplyBox(commentData) {
   });
 }
 function addNewReply(commentData, text) {
+  console.log(commentData, text.split(",")[0]);
   const newReply = {
     id: +!!commentData.replies.id + 1,
     content: text.split(",")[1],
@@ -325,6 +309,7 @@ function addNewReply(commentData, text) {
     },
     score: 0,
   };
+  console.log(newReply);
   fetch("http://localhost:3000/comments/" + commentData.id, {
     method: "PATCH",
     body: JSON.stringify({
@@ -411,6 +396,10 @@ function replyToReply(replyingToData, commentData) {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
+    });
+    setCurrentUserCommentData({
+      ...commentData,
+      replies: [...commentData.replies, newReplyData],
     });
     replyBox.classList.add("hidden");
   });
