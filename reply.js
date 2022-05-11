@@ -134,7 +134,7 @@ function createUserReplyElement(replyData, commentData) {
                   <span class="text-sm">${replyData.createdAt}</span>
   
                   <div
-                    class="text-purple-700 mx-2  delete-button-mob cursor-pointer flex-1 justify-center hidden md:flex items-center"
+                    class="text-purple-700 mx-2  delete-button cursor-pointer flex-1 justify-center hidden md:flex items-center"
                   >
                     <img
                       class="mx-2"
@@ -187,33 +187,11 @@ function createUserReplyElement(replyData, commentData) {
               </div>`;
 
   //handle delete
-  replyElement.querySelector(".delete-button").addEventListener("click", () => {
-    if (currentUserCommentData == null) {
-      setCurrentUserCommentData(commentData);
-    } else {
-      replyElement.remove();
-      let index = currentUserCommentData.replies.findIndex(
-        (element) => element.id === replyData.id
-      );
-      currentUserCommentData.replies.splice(index, 1);
-      fetch("http://localhost:3000/comments/" + commentData.id, {
-        method: "PATCH",
-        body: JSON.stringify({
-          replies: currentUserCommentData.replies,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-    }
-  });
-  replyElement
-    .querySelector(".delete-button-mob")
-    .addEventListener("click", () => {
+  for (const element of replyElement.querySelectorAll(".delete-button")) {
+    element.addEventListener("click", () => {
       if (currentUserCommentData == null) {
         setCurrentUserCommentData(commentData);
       } else {
-        replyElement.remove();
         let index = currentUserCommentData.replies.findIndex(
           (element) => element.id === replyData.id
         );
@@ -228,7 +206,10 @@ function createUserReplyElement(replyData, commentData) {
           },
         });
       }
+      replyElement.remove();
     });
+  }
+
   //handle edit
   replyElement.querySelector(".edit-button").addEventListener("click", () => {
     let editBox = document.querySelector(".edit-reply-box");
