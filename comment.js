@@ -1,5 +1,5 @@
 import { user, currentComment, setCurrentComment } from "./init";
-import { loadReplyElements, createReplyBox } from "./reply";
+import { loadReplyElements, createReplyBox, addNewReply } from "./reply";
 function createCommentElements(commentData) {
   //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
@@ -59,7 +59,7 @@ function createCommentElements(commentData) {
             alt=""
           />
         </div>
-        <div class="text-purple-700 cursor-pointer reply-el reply-mobile">
+        <div class="text-purple-700 cursor-pointer  reply-mobile">
           <img
             src="./images/icon-reply.svg"
             class="w-4 mr-1 inline-block align-middle"
@@ -74,7 +74,7 @@ function createCommentElements(commentData) {
       commentElement.appendChild(replies);
     }
     document.querySelector("#container").prepend(commentElement);
-
+    //handling reply on Comment
     commentElement.querySelector(".reply-el").addEventListener("click", () => {
       setCurrentComment(commentElement);
       createReplyBox(commentData);
@@ -84,7 +84,21 @@ function createCommentElements(commentData) {
       .querySelector(".reply-mobile")
       .addEventListener("click", () => {
         setCurrentComment(commentElement);
-        createReplyBox(commentData);
+        let replyPopup = document.querySelector(".reply-popup");
+        replyPopup.classList.remove("hidden");
+        replyPopup.querySelector("textarea").value =
+          "@" + commentData.user.username + ",";
+        replyPopup.querySelector("textarea").focus();
+        replyPopup
+          .querySelector(".reply-button")
+          .addEventListener("click", () => {
+            replyPopup.classList.add("hidden");
+
+            return addNewReply(
+              commentData,
+              replyPopup.querySelector("textarea").value
+            );
+          });
       });
   }
 }
