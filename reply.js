@@ -191,10 +191,12 @@ function createUserReplyElement(replyData, commentData) {
     element.addEventListener("click", () => {
       if (currentUserCommentData == null) {
         setCurrentUserCommentData(commentData);
+        element.click();
       } else {
         let index = currentUserCommentData.replies.findIndex(
           (element) => element.id === replyData.id
         );
+        console.log(index, currentUserCommentData);
         currentUserCommentData.replies.splice(index, 1);
         fetch("http://localhost:3000/comments/" + commentData.id, {
           method: "PATCH",
@@ -394,6 +396,10 @@ function replyToReply(replyingToData, commentData) {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
+    });
+    setCurrentUserCommentData({
+      ...commentData,
+      replies: [...commentData.replies, newReplyData],
     });
     replyBox.classList.add("hidden");
   });
