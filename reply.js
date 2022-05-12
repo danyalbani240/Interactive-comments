@@ -208,7 +208,10 @@ function createUserReplyElement(replyData, commentData) {
           },
         });
       }
-      replyElement.remove();
+      replyElement.classList.add("delete-animation");
+      setTimeout(() => {
+        replyElement.remove();
+      }, 1000);
     });
   }
 

@@ -4,3 +4,17 @@
 body{
     background-color: hsl(228, 33%, 97%);
 }
+@keyframes delete {
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        display: none;
+    }
+}
+.delete-animation{
+    animation-name: delete;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}

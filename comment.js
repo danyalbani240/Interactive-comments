@@ -183,7 +183,11 @@ function createUserCommentElement(commentData) {
   //handleDelete
   commentElement.querySelectorAll(".delete-button").forEach((element) => {
     element.addEventListener("click", () => {
-      commentElement.remove();
+      commentElement.classList.add("delete-animation");
+      setTimeout(() => {
+        commentElement.remove();
+      }, 1000);
+      console.log(commentElement);
       fetch("http://localhost:3000/comments/" + commentData.id, {
         method: "DELETE",
       });
