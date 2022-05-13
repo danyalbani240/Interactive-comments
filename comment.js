@@ -89,6 +89,8 @@ function createCommentElements(commentData) {
         replyPopup.querySelector("textarea").value =
           "@" + commentData.user.username + ",";
         replyPopup.querySelector("textarea").focus();
+        //control sending
+
         replyPopup
           .querySelector(".reply-button")
           .addEventListener("click", () => {
@@ -98,6 +100,12 @@ function createCommentElements(commentData) {
               commentData,
               replyPopup.querySelector("textarea").value
             );
+          });
+        //control cancling
+        replyPopup
+          .querySelector(".cancel-button")
+          .addEventListener("click", () => {
+            replyPopup.classList.add("hidden");
           });
       });
   }
