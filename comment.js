@@ -85,6 +85,9 @@ function createCommentElements(commentData) {
       .addEventListener("click", () => {
         setCurrentComment(commentElement);
         let replyPopup = document.querySelector(".reply-popup");
+        if (!replyPopup.classList.contains("hidden")) {
+          return;
+        }
         replyPopup.classList.remove("hidden");
         replyPopup.querySelector("textarea").value =
           "@" + commentData.user.username + ",";
