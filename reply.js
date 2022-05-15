@@ -196,7 +196,7 @@ function createUserReplyElement(replyData, commentData) {
         let index = currentUserCommentData.replies.findIndex(
           (element) => element.id === replyData.id
         );
-        console.log(index, currentUserCommentData);
+
         currentUserCommentData.replies.splice(index, 1);
         fetch("http://localhost:3000/comments/" + commentData.id, {
           method: "PATCH",
@@ -297,7 +297,6 @@ function createReplyBox(commentData) {
   });
 }
 function addNewReply(commentData, text) {
-  console.log(commentData, text.split(",")[0]);
   const newReply = {
     id: +!!commentData.replies.id + 1,
     content: text.split(",")[1],
@@ -312,7 +311,6 @@ function addNewReply(commentData, text) {
     },
     score: 0,
   };
-  console.log(newReply);
   fetch("http://localhost:3000/comments/" + commentData.id, {
     method: "PATCH",
     body: JSON.stringify({

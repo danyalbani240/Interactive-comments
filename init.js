@@ -43,7 +43,6 @@ document
         },
         replies: [],
       };
-      console.log(newCommentData, lasCommentId);
       let userNewCommentElement = createUserCommentElement(newCommentData);
       document.querySelector("#container").prepend(userNewCommentElement);
       //fetching data to server
@@ -54,9 +53,7 @@ document
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newCommentData),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data));
+      }).then((res) => res.json());
     }
   });
 
