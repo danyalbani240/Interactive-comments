@@ -198,7 +198,6 @@ function createUserCommentElement(commentData) {
       setTimeout(() => {
         commentElement.remove();
       }, 1000);
-      console.log(commentElement);
       fetch("http://localhost:3000/comments/" + commentData.id, {
         method: "DELETE",
       });
