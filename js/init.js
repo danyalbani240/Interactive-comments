@@ -6,18 +6,20 @@ let currentUserCommentData = null;
 let lasCommentId = null;
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
-  .then((data) => (user = data.username));
-let data = null;
-fetch("http://localhost:3000/comments")
-  .then((res) => res.json())
-  .then((res) => loadComments(res.reverse()));
-
-// adding data on screen
-function loadComments(comments) {
-  lasCommentId = comments.reverse()[comments.length - 1].id;
-  comments.reverse().forEach((comment) => {
-    createCommentElements(comment);
+  .then((data) => {
+    user = data.username;
+    loadComments();
   });
+
+function loadComments() {
+  fetch("http://localhost:3000/comments")
+    .then((res) => res.json())
+    .then((res) => {
+      lasCommentId = res()[comments.length - 1].id;
+      comments().forEach((comment) => {
+        createCommentElements(comment);
+      });
+    });
 }
 
 //adding newComment By User
