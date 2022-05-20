@@ -104,7 +104,7 @@ function createUserReplyElement(replyData, commentData) {
   replyElement.classList = "flex bg-white my-2 items-center";
   replyElement.innerHTML = `
     <div
-                class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
+                class="bg-purple-50 w-10 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
               >
                 <img src="./images/icon-plus.svg" class="cursor-pointer" alt="" />
                 <span class="text-purple-700 font-bold">${replyData.score}</span>
