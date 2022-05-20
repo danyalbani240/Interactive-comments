@@ -1,4 +1,4 @@
-import { user, currentComment, setCurrentComment } from "./init";
+import { user, currentComment, setCurrentComment } from "../init";
 import { loadReplyElements, createReplyBox, addNewReply } from "./reply";
 function createCommentElements(commentData) {
   //checking if it's the logged in user comment or not
@@ -70,10 +70,6 @@ function createCommentElements(commentData) {
     </div>
   </div>`;
     if (commentData.replies.length !== 0) {
-      commentData.replies.forEach((replyData) => {
-        replyData.user.username === user ? console.log(1) : console.log(2);
-        console.log(replyData.user.username, user);
-      });
       let replies = loadReplyElements(commentData.replies, commentData);
       commentElement.appendChild(replies);
     }

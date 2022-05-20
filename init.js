@@ -1,5 +1,9 @@
-import "../style.css";
-import { createCommentElements, createUserCommentElement } from "./comment";
+import "./style.css";
+console.log(1);
+import {
+  createCommentElements,
+  createUserCommentElement,
+} from "./modules/comment";
 let user;
 let currentComment = null;
 let currentUserCommentData = null;
@@ -15,8 +19,8 @@ function loadComments() {
   fetch("http://localhost:3000/comments")
     .then((res) => res.json())
     .then((res) => {
-      lasCommentId = res()[comments.length - 1].id;
-      comments().forEach((comment) => {
+      lasCommentId = res[res.length - 1].id;
+      res.reverse().forEach((comment) => {
         createCommentElements(comment);
       });
     });

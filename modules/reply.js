@@ -4,7 +4,7 @@ import {
   currentUserCommentData,
   setCurrentComment,
   setCurrentUserCommentData,
-} from "./init";
+} from "../init";
 function createReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
   replyElement.classList = "flex bg-white my-2 items-center";
@@ -88,7 +88,6 @@ function loadReplyElements(repliesData, commentData) {
     "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
   repliesData.forEach((replyData) => {
     if (replyData.user.username === user) {
-      console.log(1);
       let replyElement = createUserReplyElement(replyData, commentData);
       repliesContainerElement.appendChild(replyElement);
     } else {
