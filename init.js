@@ -1,5 +1,4 @@
 import "./style.css";
-console.log(1);
 import {
   createCommentElements,
   createUserCommentElement,
@@ -69,6 +68,14 @@ function setCurrentComment(value) {
 function setCurrentUserCommentData(value) {
   currentUserCommentData = value;
 }
+document.querySelector(".modal-container").addEventListener("click", (e) => {
+  if (e.target === e.currentTarget) {
+    document.querySelector(".popup").classList.add("hidden");
+    e.currentTarget.classList.add("hidden");
+    document.querySelector(".edit-reply-box").classList.add("hidden");
+    document.querySelector(".reply-popup").classList.add("hidden");
+  }
+});
 export {
   user,
   currentComment,

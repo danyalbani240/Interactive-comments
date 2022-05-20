@@ -89,6 +89,7 @@ function createCommentElements(commentData) {
           return;
         }
         replyPopup.classList.remove("hidden");
+        document.querySelector(".modal-container").classList.remove("hidden");
         replyPopup.querySelector("textarea").value =
           "@" + commentData.user.username + ",";
         replyPopup.querySelector("textarea").focus();
@@ -98,6 +99,7 @@ function createCommentElements(commentData) {
           .querySelector(".reply-button")
           .addEventListener("click", () => {
             replyPopup.classList.add("hidden");
+            document.querySelector(".modal-container").classList.add("hidden");
 
             return addNewReply(
               commentData,
@@ -108,6 +110,8 @@ function createCommentElements(commentData) {
         replyPopup
           .querySelector(".cancel-button")
           .addEventListener("click", () => {
+            document.querySelector(".modal-container").classList.add("hidden");
+
             replyPopup.classList.add("hidden");
           });
       });

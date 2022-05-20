@@ -367,6 +367,7 @@ function handleEdit(newText, replyData, commentData, replyElement) {
 function replyToReply(replyingToData, commentData) {
   let replyBox = document.querySelector(".reply-popup");
   replyBox.classList.remove("hidden");
+  document.querySelector(".modal-container").classList.remove("hidden");
   replyBox.querySelector("textarea").value = replyingToData.user.username + ",";
   replyBox.querySelector(".cancel-button").addEventListener("click", () => {
     replyBox.classList.add("hidden");
@@ -403,6 +404,7 @@ function replyToReply(replyingToData, commentData) {
       replies: [...commentData.replies, newReplyData],
     });
     replyBox.classList.add("hidden");
+    document.querySelector(".modal-container").classList.add("hidden");
   });
 }
 export {
