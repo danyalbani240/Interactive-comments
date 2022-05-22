@@ -189,29 +189,39 @@ function createUserReplyElement(replyData, commentData) {
   //handle delete
   for (const element of replyElement.querySelectorAll(".delete-button")) {
     element.addEventListener("click", () => {
-      if (currentUserCommentData == null) {
-        setCurrentUserCommentData(commentData);
-        element.click();
-      } else {
-        let index = currentUserCommentData.replies.findIndex(
-          (element) => element.id === replyData.id
-        );
+      let promptElement = document.querySelector(".popup-delete");
+      promptElement.classList.toggle("hidden");
+      promptElement.parentElement.classList.toggle("hidden");
 
-        currentUserCommentData.replies.splice(index, 1);
-        fetch("http://localhost:3000/comments/" + commentData.id, {
-          method: "PATCH",
-          body: JSON.stringify({
-            replies: currentUserCommentData.replies,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        });
-      }
-      replyElement.classList.add("delete-animation");
-      setTimeout(() => {
-        replyElement.remove();
-      }, 1000);
+      promptElement.querySelector(".cancel").addEventListener("click", () => {
+        promptElement.classList.toggle("hidden");
+        promptElement.parentElement.classList.toggle("hidden");
+      });
+      promptElement.querySelector(".delete").addEventListener("click", () => {
+        if (currentUserCommentData == null) {
+          setCurrentUserCommentData(commentData);
+          element.click();
+        } else {
+          let index = currentUserCommentData.replies.findIndex(
+            (element) => element.id === replyData.id
+          );
+
+          currentUserCommentData.replies.splice(index, 1);
+          fetch("http://localhost:3000/comments/" + commentData.id, {
+            method: "PATCH",
+            body: JSON.stringify({
+              replies: currentUserCommentData.replies,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          });
+        }
+        replyElement.classList.add("delete-animation");
+        setTimeout(() => {
+          replyElement.remove();
+        }, 1000);
+      });
     });
   }
 
