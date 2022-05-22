@@ -219,10 +219,12 @@ function createUserReplyElement(replyData, commentData) {
   replyElement.querySelector(".edit-button").addEventListener("click", () => {
     let editBox = document.querySelector(".edit-reply-box");
     editBox.classList.toggle("hidden");
+    editBox.parentElement.classList.toggle("hidden");
     editBox.querySelector("textarea").value =
       replyElement.querySelector(".reply-content").innerText;
     editBox.querySelector(".cancel").addEventListener("click", () => {
       editBox.classList.add("hidden");
+      editBox.parentElement.classList.add("hidden");
     });
     editBox.querySelector("button.send-edit").addEventListener("click", () => {
       handleEdit(
@@ -367,10 +369,12 @@ function handleEdit(newText, replyData, commentData, replyElement) {
 function replyToReply(replyingToData, commentData) {
   let replyBox = document.querySelector(".reply-popup");
   replyBox.classList.remove("hidden");
+  replyBox.parentElement.classList.remove("hidden");
   document.querySelector(".modal-container").classList.remove("hidden");
   replyBox.querySelector("textarea").value = replyingToData.user.username + ",";
   replyBox.querySelector(".cancel-button").addEventListener("click", () => {
     replyBox.classList.add("hidden");
+    replyBox.parentElement.classList.add("hidden");
   });
   replyBox.querySelector(".reply-button").addEventListener("click", () => {
     let newReplyData = {
@@ -404,6 +408,7 @@ function replyToReply(replyingToData, commentData) {
       replies: [...commentData.replies, newReplyData],
     });
     replyBox.classList.add("hidden");
+    replyBox.parentElement.classList.add("hidden");
     document.querySelector(".modal-container").classList.add("hidden");
   });
 }
