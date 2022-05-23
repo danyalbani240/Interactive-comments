@@ -21,7 +21,7 @@
         <textarea
           placeholder="Add a Comment"
           name="Add a Comment"
-          class="rounded border-2 w-11/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2 user-new-comment-input"
+          class="rounded border-2 add-comment-input w-11/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2 user-new-comment-input"
           id=""
           cols="30"
           rows="5"
@@ -35,6 +35,7 @@
             alt="account owner image"
           />
           <button
+            data-test="send-comment"
             class="text-white add-new-comment bg-purple-700 rounded px-4 py-2 text-sm h-10 font-bold"
           >
             Send
