@@ -250,10 +250,12 @@ function createUserReplyElement(replyData, commentData) {
     .addEventListener("click", () => {
       let editBox = document.querySelector(".edit-reply-box");
       editBox.classList.toggle("hidden");
+      editBox.parentElement.classList.toggle("hidden");
       editBox.querySelector("textarea").value =
         replyElement.querySelector(".reply-content").innerText;
       editBox.querySelector(".cancel").addEventListener("click", () => {
         editBox.classList.add("hidden");
+        editBox.parentElement.classList.add("hidden");
       });
       editBox
         .querySelector("button.send-edit")
@@ -358,6 +360,9 @@ function handleEdit(newText, replyData, commentData, replyElement) {
   //chenge element locally on screen
   replyElement.querySelector(".reply-content").innerText = newText;
   document.querySelector(".edit-reply-box").classList.add("hidden");
+  document.parentElement
+    .querySelector(".edit-reply-box")
+    .classList.add("hidden");
   //fetch the newReply
   const newReplyData = { ...replyData, content: newText.split(",")[1] };
   let index = commentData.replies.findIndex(
