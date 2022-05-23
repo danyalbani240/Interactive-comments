@@ -1,8 +1,4 @@
-import "./style.css";
-import {
-  createCommentElements,
-  createUserCommentElement,
-} from "./modules/comment";
+import { createCommentElements, createUserCommentElement } from "./comment.js";
 let user;
 let currentComment = null;
 let currentUserCommentData = null;

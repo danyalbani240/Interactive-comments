@@ -4,7 +4,7 @@ import {
   currentUserCommentData,
   setCurrentComment,
   setCurrentUserCommentData,
-} from "../init";
+} from "./init.js";
 function createReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
   replyElement.classList = "flex bg-white my-2 items-center";

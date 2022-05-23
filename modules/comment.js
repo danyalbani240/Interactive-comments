@@ -1,5 +1,5 @@
-import { user, currentComment, setCurrentComment } from "../init";
-import { loadReplyElements, createReplyBox, addNewReply } from "./reply";
+import { user, currentComment, setCurrentComment } from "./init.js";
+import { loadReplyElements, createReplyBox, addNewReply } from "./reply.js";
 function createCommentElements(commentData) {
   //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
