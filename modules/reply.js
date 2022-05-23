@@ -101,6 +101,7 @@ function loadReplyElements(repliesData, commentData) {
 
 function createUserReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
+  replyElement.dataset.message = replyData.content;
   replyElement.classList = "flex bg-white my-2 items-center";
   replyElement.innerHTML = `
     <div
@@ -134,6 +135,7 @@ function createUserReplyElement(replyData, commentData) {
                   <span class="text-sm">${replyData.createdAt}</span>
   
                   <div
+                   test-delete="1"
                     class="text-purple-700 mx-2  delete-button cursor-pointer flex-1 justify-center hidden md:flex items-center"
                   >
                     <img
@@ -285,6 +287,7 @@ function createReplyBox(commentData) {
            
             name="reply"
             class="rounded border-2 w-10/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2"
+            data-test="reply-value"
             id=""
             cols="20"
             rows="4"

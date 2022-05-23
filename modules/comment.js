@@ -31,6 +31,7 @@ function createCommentElements(commentData) {
         >
         <span class="text-sm">${commentData.createdAt}</span>
         <div
+        data-test="reply-el"
           class="text-purple-700 cursor-pointer flex-1 text-right hidden md:block reply-el"
         >
           <img
