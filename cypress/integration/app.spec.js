@@ -28,7 +28,7 @@ describe("test the whole app if it works", () => {
     cy.get(".test-delete").click();
     cy.get('[test-delete="1"]').should("not.exist");
   });
-  it.only("user can add new comment and edit post", () => {
+  it("user can add new comment and edit post", () => {
     let typedComment = `comment ${Math.random()}`;
     cy.get(".add-comment-input").type(typedComment);
     cy.get("[data-test=send-comment]").click();
@@ -48,4 +48,7 @@ describe("test the whole app if it works", () => {
     
     
   });
+  it.only("user can reply to an reply",()=>{})
+   
+  
 });

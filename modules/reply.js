@@ -202,8 +202,8 @@ function createUserReplyElement(replyData, commentData) {
       promptElement.querySelector(".delete").addEventListener("click", () => {
         if (currentUserCommentData == null) {
           setCurrentUserCommentData(commentData);
-          element.click();
-        } else {
+
+        } 
           let index = currentUserCommentData.replies.findIndex(
             (element) => element.id === replyData.id
           );
@@ -218,7 +218,7 @@ function createUserReplyElement(replyData, commentData) {
               "Content-type": "application/json; charset=UTF-8",
             },
           });
-        }
+        
         replyElement.classList.add("delete-animation");
         setTimeout(() => {
           replyElement.remove();
