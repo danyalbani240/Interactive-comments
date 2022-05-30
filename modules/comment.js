@@ -70,6 +70,7 @@ function createCommentElements(commentData) {
       </div>
     </div>
   </div>`;
+  //adding the replies for comments
     if (commentData.replies.length !== 0) {
       let replies = loadReplyElements(commentData.replies, commentData);
       commentElement.appendChild(replies);
@@ -107,7 +108,7 @@ function createCommentElements(commentData) {
               replyPopup.querySelector("textarea").value
             );
           });
-        //control cancling
+        //control when user cancel's the reply
         replyPopup
           .querySelector(".cancel-button")
           .addEventListener("click", () => {

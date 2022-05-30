@@ -14,13 +14,13 @@ function loadComments() {
     .then((res) => res.json())
     .then((res) => {
       res.reverse().forEach((comment) => {
+        //loading the initial comments
         createCommentElements(comment);
       });
     });
 }
 
-//adding newComment By User
-
+//handle newComment By User
 document
   .querySelector("button.add-new-comment")
   .addEventListener("click", () => {
@@ -55,12 +55,7 @@ document
     }
   });
 
-function setCurrentComment(value) {
-  currentComment = value;
-}
-function setCurrentUserCommentData(value) {
-  currentUserCommentData = value;
-}
+//closing the modals when clicking on the background of them.
 document.querySelector(".modal-container").addEventListener("click", (e) => {
   if (e.target === e.currentTarget) {
     document.querySelector(".popup").classList.add("hidden");
@@ -69,6 +64,13 @@ document.querySelector(".modal-container").addEventListener("click", (e) => {
     document.querySelector(".reply-popup").classList.add("hidden");
   }
 });
+//setting the value of two variables from modules
+function setCurrentComment(value) {
+  currentComment = value;
+}
+function setCurrentUserCommentData(value) {
+  currentUserCommentData = value;
+}
 export {
   user,
   currentComment,

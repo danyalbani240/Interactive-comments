@@ -82,17 +82,17 @@ function createReplyElement(replyData, commentData) {
   });
   return replyElement;
 }
-
+//loading the initial Replies from Data base
 function loadReplyElements(repliesData, commentData) {
   let repliesContainerElement = document.createElement("div");
   repliesContainerElement.classList =
     "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
-  repliesData.forEach((replyData) => {
-    if (replyData.user.username === user) {
-      let replyElement = createUserReplyElement(replyData, commentData);
+  repliesData.forEach((reply) => {
+    if (reply.user.username === user) {
+      let replyElement = createUserReplyElement(reply, commentData);
       repliesContainerElement.appendChild(replyElement);
     } else {
-      let replyElement = createReplyElement(replyData, commentData);
+      let replyElement = createReplyElement(reply, commentData);
       repliesContainerElement.appendChild(replyElement);
     }
   });
