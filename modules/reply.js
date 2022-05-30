@@ -4,9 +4,10 @@ import {
   currentUserCommentData,
   setCurrentComment,
   setCurrentUserCommentData,
-} from "../init";
+} from "./init.js";
 function createReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
+  replyElement.dataset.test = "reply-test"
   replyElement.classList = "flex bg-white my-2 items-center";
   replyElement.innerHTML = `<div
       class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -101,6 +102,7 @@ function loadReplyElements(repliesData, commentData) {
 
 function createUserReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
+  replyElement.dataset.message = replyData.content;
   replyElement.classList = "flex bg-white my-2 items-center";
   replyElement.innerHTML = `
     <div
@@ -134,6 +136,7 @@ function createUserReplyElement(replyData, commentData) {
                   <span class="text-sm">${replyData.createdAt}</span>
   
                   <div
+                   test-delete="1"
                     class="text-purple-700 mx-2  delete-button cursor-pointer flex-1 justify-center hidden md:flex items-center"
                   >
                     <img
@@ -200,8 +203,8 @@ function createUserReplyElement(replyData, commentData) {
       promptElement.querySelector(".delete").addEventListener("click", () => {
         if (currentUserCommentData == null) {
           setCurrentUserCommentData(commentData);
-          element.click();
-        } else {
+
+        } 
           let index = currentUserCommentData.replies.findIndex(
             (element) => element.id === replyData.id
           );
@@ -216,7 +219,7 @@ function createUserReplyElement(replyData, commentData) {
               "Content-type": "application/json; charset=UTF-8",
             },
           });
-        }
+        
         replyElement.classList.add("delete-animation");
         setTimeout(() => {
           replyElement.remove();
@@ -250,10 +253,12 @@ function createUserReplyElement(replyData, commentData) {
     .addEventListener("click", () => {
       let editBox = document.querySelector(".edit-reply-box");
       editBox.classList.toggle("hidden");
+      editBox.parentElement.classList.toggle("hidden");
       editBox.querySelector("textarea").value =
         replyElement.querySelector(".reply-content").innerText;
       editBox.querySelector(".cancel").addEventListener("click", () => {
         editBox.classList.add("hidden");
+        editBox.parentElement.classList.add("hidden");
       });
       editBox
         .querySelector("button.send-edit")
@@ -283,6 +288,7 @@ function createReplyBox(commentData) {
            
             name="reply"
             class="rounded border-2 w-10/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2"
+            data-test="reply-value"
             id=""
             cols="20"
             rows="4"
@@ -358,6 +364,9 @@ function handleEdit(newText, replyData, commentData, replyElement) {
   //chenge element locally on screen
   replyElement.querySelector(".reply-content").innerText = newText;
   document.querySelector(".edit-reply-box").classList.add("hidden");
+  document.parentElement
+    .querySelector(".edit-reply-box")
+    .classList.add("hidden");
   //fetch the newReply
   const newReplyData = { ...replyData, content: newText.split(",")[1] };
   let index = commentData.replies.findIndex(

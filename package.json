@@ -9,11 +9,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",
+    "cypress": "^9.7.0",
     "postcss": "^8.4.12",
-    "tailwindcss": "^3.0.24",
-    "vite": "^2.9.2"
-  },
-  "dependencies": {
-    "cypress": "^9.6.1"
+    "tailwindcss": "^3.0.24"
   }
 }
