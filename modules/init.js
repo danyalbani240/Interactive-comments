@@ -2,7 +2,6 @@ import { createCommentElements, createUserCommentElement } from "./comment.js";
 let user;
 let currentComment = null;
 let currentUserCommentData = null;
-let lasCommentId = null;
 fetch("http://localhost:3000/currentUser")
   .then((res) => res.json())
   .then((data) => {
@@ -14,7 +13,6 @@ function loadComments() {
   fetch("http://localhost:3000/comments")
     .then((res) => res.json())
     .then((res) => {
-      lasCommentId = res[res.length - 1].id;
       res.reverse().forEach((comment) => {
         createCommentElements(comment);
       });
@@ -31,7 +29,6 @@ document
       return;
     } else {
       let newCommentData = {
-        id: ++lasCommentId,
         content: input.value,
         createdAt: "1 day ago",
         score: 0,
@@ -76,7 +73,6 @@ export {
   user,
   currentComment,
   currentUserCommentData,
-  lasCommentId,
   setCurrentComment,
   setCurrentUserCommentData,
 };
