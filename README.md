@@ -9,6 +9,7 @@ The Project Idea And pictures was from frontendmentor.com and I dd from there.
 # What Did I learned? 
 Well  i Actually Learned that some times like before this project I should really code with simple vanilla and no framework, so i could keep the javascript and the deep learning in mind.
 after this project i think i should look at the javascript.dev again.
+And I learned how to write and run e2e tests
 
 
 ## Install And Run Setup
@@ -20,5 +21,4 @@ $ npm install
 # run json-server
 $ json-server --watch data.json
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+#start the project by using vscode live server or any live server(for handling modules)
