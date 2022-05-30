@@ -121,7 +121,7 @@ function createCommentElements(commentData) {
 function createUserCommentElement(commentData) {
   let commentElement = document.createElement("div");
   commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
-
+  commentElement.dataset.comment = commentData.content;
   commentElement.innerHTML = `<div class="flex items-center bg-white rounded">
     <div
       class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -211,10 +211,12 @@ function createUserCommentElement(commentData) {
   //handle user edit comment  :
   commentElement.querySelectorAll(".edit-button").forEach((element) => {
     element.addEventListener("click", () => {
-      let editReplyBox = document.querySelector(".edit-reply-box ");
+      let editReplyBox = document.querySelector(".edit-reply-box");
       editReplyBox.classList.remove("hidden");
+      editReplyBox.parentElement.classList.remove("hidden");
       editReplyBox.querySelector("textarea").value =
         commentElement.querySelector("p.content").innerText;
+        editReplyBox.querySelector(".send-edit").innerText = "Edit";
       editReplyBox.querySelector(".send-edit").addEventListener("click", () => {
         fetch("http://localhost:3000/comments/" + commentData.id, {
           method: "PATCH",
