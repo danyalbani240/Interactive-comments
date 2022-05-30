@@ -1,5 +1,5 @@
-import { user, currentComment, setCurrentComment } from "../init";
-import { loadReplyElements, createReplyBox, addNewReply } from "./reply";
+import { user, currentComment, setCurrentComment } from "./init.js";
+import { loadReplyElements, createReplyBox, addNewReply } from "./reply.js";
 function createCommentElements(commentData) {
   //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
@@ -31,6 +31,7 @@ function createCommentElements(commentData) {
         >
         <span class="text-sm">${commentData.createdAt}</span>
         <div
+        data-test="reply-el"
           class="text-purple-700 cursor-pointer flex-1 text-right hidden md:block reply-el"
         >
           <img
@@ -69,6 +70,7 @@ function createCommentElements(commentData) {
       </div>
     </div>
   </div>`;
+  //adding the replies for comments
     if (commentData.replies.length !== 0) {
       let replies = loadReplyElements(commentData.replies, commentData);
       commentElement.appendChild(replies);
@@ -106,7 +108,7 @@ function createCommentElements(commentData) {
               replyPopup.querySelector("textarea").value
             );
           });
-        //control cancling
+        //control when user cancel's the reply
         replyPopup
           .querySelector(".cancel-button")
           .addEventListener("click", () => {
@@ -120,7 +122,7 @@ function createCommentElements(commentData) {
 function createUserCommentElement(commentData) {
   let commentElement = document.createElement("div");
   commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
-
+  commentElement.dataset.comment = commentData.content;
   commentElement.innerHTML = `<div class="flex items-center bg-white rounded">
     <div
       class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -210,10 +212,12 @@ function createUserCommentElement(commentData) {
   //handle user edit comment  :
   commentElement.querySelectorAll(".edit-button").forEach((element) => {
     element.addEventListener("click", () => {
-      let editReplyBox = document.querySelector(".edit-reply-box ");
+      let editReplyBox = document.querySelector(".edit-reply-box");
       editReplyBox.classList.remove("hidden");
+      editReplyBox.parentElement.classList.remove("hidden");
       editReplyBox.querySelector("textarea").value =
         commentElement.querySelector("p.content").innerText;
+        editReplyBox.querySelector(".send-edit").innerText = "Edit";
       editReplyBox.querySelector(".send-edit").addEventListener("click", () => {
         fetch("http://localhost:3000/comments/" + commentData.id, {
           method: "PATCH",
