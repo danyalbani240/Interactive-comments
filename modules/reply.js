@@ -7,6 +7,7 @@ import {
 } from "./init.js";
 function createReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
+  replyElement.dataset.test = "reply-test"
   replyElement.classList = "flex bg-white my-2 items-center";
   replyElement.innerHTML = `<div
       class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"

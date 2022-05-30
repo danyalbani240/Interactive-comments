@@ -33,22 +33,25 @@ describe("test the whole app if it works", () => {
     cy.get(".add-comment-input").type(typedComment);
     cy.get("[data-test=send-comment]").click();
     cy.contains(typedComment).should("exist");
-    cy.pause()
 
     cy.get(`[data-comment="${typedComment}"]`).find(".edit-button:visible").click()
-    cy.pause()
     let newTypedComment = `comment ${Math.random()}`;
 
     cy.get(".edit-reply-box").find("textarea").clear().type(newTypedComment)
     cy.get(".edit-reply-box").find(".send-edit").click()
-    cy.pause()
 
     cy.contains(typedComment).should("not.exist");
     cy.contains(newTypedComment).should("exist");
     
     
   });
-  it.only("user can reply to an reply",()=>{})
+  it.only("user can reply to an reply",()=>{
+    cy.get('[data-test="reply-test"]').first().find(".reply-button:visible").click()
+    let replyMessage  =`reply ${Math.random()}`;
+    cy.get(".reply-popup textarea").type(replyMessage);
+    cy.get(".reply-popup .reply-button").click()
+    cy.contains(replyMessage).should("exist");
+  })
    
   
 });
