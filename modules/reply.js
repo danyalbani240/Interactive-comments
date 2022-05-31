@@ -7,7 +7,7 @@ import {
 } from "./init.js";
 function createReplyElement(replyData, commentData) {
   let replyElement = document.createElement("div");
-  replyElement.dataset.test = "reply-test"
+  replyElement.dataset.test = "reply-test";
   replyElement.classList = "flex bg-white my-2 items-center";
   replyElement.innerHTML = `<div
       class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -203,23 +203,22 @@ function createUserReplyElement(replyData, commentData) {
       promptElement.querySelector(".delete").addEventListener("click", () => {
         if (currentUserCommentData == null) {
           setCurrentUserCommentData(commentData);
+        }
+        let index = currentUserCommentData.replies.findIndex(
+          (element) => element.id === replyData.id
+        );
 
-        } 
-          let index = currentUserCommentData.replies.findIndex(
-            (element) => element.id === replyData.id
-          );
+        currentUserCommentData.replies.splice(index, 1);
+        fetch("http://localhost:3000/comments/" + commentData.id, {
+          method: "PATCH",
+          body: JSON.stringify({
+            replies: currentUserCommentData.replies,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
 
-          currentUserCommentData.replies.splice(index, 1);
-          fetch("http://localhost:3000/comments/" + commentData.id, {
-            method: "PATCH",
-            body: JSON.stringify({
-              replies: currentUserCommentData.replies,
-            }),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-            },
-          });
-        
         replyElement.classList.add("delete-animation");
         setTimeout(() => {
           replyElement.remove();
@@ -308,11 +307,7 @@ function createReplyBox(commentData) {
   currentComment
     .getElementsByClassName("flex items-center bg-white rounded")[0]
     .after(replyBox);
-  replyBox.querySelector(".send-button").addEventListener("click", () => {
-    replyBox.remove();
-
-    return addNewReply(commentData, replyBox.querySelector("textarea").value);
-  });
+  return replyBox;
 }
 function addNewReply(commentData, text) {
   const newReply = {
@@ -329,6 +324,7 @@ function addNewReply(commentData, text) {
     },
     score: 0,
   };
+  console.log(newReply);
   fetch("http://localhost:3000/comments/" + commentData.id, {
     method: "PATCH",
     body: JSON.stringify({
@@ -340,11 +336,11 @@ function addNewReply(commentData, text) {
   })
     .then((res) => res.json())
     .catch((e) => console.log(e));
-  createNewReplyElement(newReply, commentData);
   setCurrentUserCommentData({
     ...commentData,
     replies: [...commentData.replies, newReply],
   });
+  return newReply;
 }
 
 function createNewReplyElement(replyData, commentData) {
@@ -353,11 +349,12 @@ function createNewReplyElement(replyData, commentData) {
     commentsContainerElement.className =
       "flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5";
     let replyElement = createUserReplyElement(replyData, commentData);
+
     commentsContainerElement.append(replyElement);
-    currentComment.append(commentsContainerElement);
+    return commentsContainerElement;
   } else {
     let replyElement = createUserReplyElement(replyData, commentData);
-    currentComment.querySelector(".comments-container").append(replyElement);
+    return replyElement;
   }
 }
 function handleEdit(newText, replyData, commentData, replyElement) {
@@ -384,6 +381,7 @@ function handleEdit(newText, replyData, commentData, replyElement) {
       "Content-type": "application/json; charset=UTF-8",
     },
   });
+  return newReplies;
 }
 function replyToReply(replyingToData, commentData) {
   let replyBox = document.querySelector(".reply-popup");

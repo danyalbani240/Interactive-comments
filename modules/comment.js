@@ -1,10 +1,16 @@
 import { user, currentComment, setCurrentComment } from "./init.js";
-import { loadReplyElements, createReplyBox, addNewReply } from "./reply.js";
+import {
+  loadReplyElements,
+  createReplyBox,
+  addNewReply,
+  createNewReplyElement,
+} from "./reply.js";
 function createCommentElements(commentData) {
   //checking if it's the logged in user comment or not
   if (commentData.user.username === user) {
     let commentElement = createUserCommentElement(commentData);
     document.querySelector("#container").prepend(commentElement);
+    return commentElement;
   } else {
     let commentElement = document.createElement("div");
     commentElement.classList = "flex flex-col max-w-3xl mx-auto w-11/12 my-2";
@@ -70,7 +76,7 @@ function createCommentElements(commentData) {
       </div>
     </div>
   </div>`;
-  //adding the replies for comments
+    //adding the replies for comments
     if (commentData.replies.length !== 0) {
       let replies = loadReplyElements(commentData.replies, commentData);
       commentElement.appendChild(replies);
@@ -79,7 +85,25 @@ function createCommentElements(commentData) {
     //handling reply on Comment
     commentElement.querySelector(".reply-el").addEventListener("click", () => {
       setCurrentComment(commentElement);
-      createReplyBox(commentData);
+      
+      const replyBox = createReplyBox(commentData);
+      replyBox.querySelector(".send-button").addEventListener("click", () => {
+        replyBox.remove();
+
+        let newReplyData = addNewReply(
+          commentData,
+          replyBox.querySelector("textarea").value
+        );
+        let newReplyElement = createNewReplyElement(newReplyData, commentData);
+        //adding the new Reply to the Screen
+        if (newReplyElement.classList.contains("comments-container")) {
+          commentElement.append(newReplyElement);
+        } else {
+          commentElement
+            .querySelector(".comments-container")
+            .append(replyElement);
+        }
+      });
     });
 
     commentElement
@@ -117,6 +141,7 @@ function createCommentElements(commentData) {
             replyPopup.classList.add("hidden");
           });
       });
+    return commentElement;
   }
 }
 function createUserCommentElement(commentData) {
@@ -217,7 +242,7 @@ function createUserCommentElement(commentData) {
       editReplyBox.parentElement.classList.remove("hidden");
       editReplyBox.querySelector("textarea").value =
         commentElement.querySelector("p.content").innerText;
-        editReplyBox.querySelector(".send-edit").innerText = "Edit";
+      editReplyBox.querySelector(".send-edit").innerText = "Edit";
       editReplyBox.querySelector(".send-edit").addEventListener("click", () => {
         fetch("http://localhost:3000/comments/" + commentData.id, {
           method: "PATCH",
