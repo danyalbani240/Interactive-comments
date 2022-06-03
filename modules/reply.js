@@ -76,17 +76,18 @@ function createReplyElement(replyData, commentData) {
   replyElement.querySelectorAll(".reply-button").forEach((element) => {
     element.addEventListener("click", () => {
       setCurrentComment(replyElement.parentElement.parentElement);
+      //show the popup
       let replyBox = document.querySelector(".reply-popup");
       replyBox.classList.remove("hidden");
       replyBox.parentElement.classList.remove("hidden");
       document.querySelector(".modal-container").classList.remove("hidden");
-      replyBox.querySelector("textarea").value =
-        replyData.user.username + ",";
-        //handle cancel
+      replyBox.querySelector("textarea").value = replyData.user.username + ",";
+      //handle cancel
       replyBox.querySelector(".cancel-button").addEventListener("click", () => {
         replyBox.classList.add("hidden");
         replyBox.parentElement.classList.add("hidden");
       });
+      //handle send
       replyBox.querySelector(".reply-button").addEventListener("click", () => {
         let newReplyData = {
           id: commentData.replies[commentData.replies.length - 1].id + 1,
@@ -106,11 +107,13 @@ function createReplyElement(replyData, commentData) {
         currentComment
           .querySelector(".comments-container")
           .append(newReplyElement);
-        replyToReply(commentData.replies, newReplyData,commentData.id);
+        //fetch the reply
+        replyToReply(commentData.replies, newReplyData, commentData.id);
         setCurrentUserCommentData({
           ...commentData,
           replies: [...commentData.replies, newReplyData],
         });
+        //remove the modal
         replyBox.classList.add("hidden");
         replyBox.parentElement.classList.add("hidden");
         document.querySelector(".modal-container").classList.add("hidden");
@@ -419,7 +422,7 @@ function handleEdit(newText, replyData, commentData, replyElement) {
   });
   return newReplies;
 }
-function replyToReply(commentReplies, newReplyData,commentId) {
+function replyToReply(commentReplies, newReplyData, commentId) {
   //adding the new replies to database :
   fetch("http://localhost:3000/comments/" + commentId, {
     method: "PATCH",

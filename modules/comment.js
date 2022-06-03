@@ -85,7 +85,7 @@ function createCommentElements(commentData) {
     //handling reply on Comment
     commentElement.querySelector(".reply-el").addEventListener("click", () => {
       setCurrentComment(commentElement);
-      
+
       const replyBox = createReplyBox(commentData);
       replyBox.querySelector(".send-button").addEventListener("click", () => {
         replyBox.remove();
