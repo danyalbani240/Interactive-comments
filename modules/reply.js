@@ -249,15 +249,18 @@ function createUserReplyElement(replyData, commentData) {
         );
 
         currentUserCommentData.replies.splice(index, 1);
-        fetch("http://localhost:3000/comments/" + commentData.id, {
-          method: "PATCH",
-          body: JSON.stringify({
-            replies: currentUserCommentData.replies,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        });
+        fetch(
+          `https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentData.id}.json`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              replies: currentUserCommentData.replies,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
+        );
 
         replyElement.classList.add("delete-animation");
         setTimeout(() => {
@@ -364,15 +367,18 @@ function addNewReply(commentData, text) {
     },
     score: 0,
   };
-  fetch("http://localhost:3000/comments/" + commentData.id, {
-    method: "PATCH",
-    body: JSON.stringify({
-      replies: [...commentData.replies, newReply],
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  })
+  fetch(
+    `https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentData.id}.json`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        replies: [...commentData.replies, newReply],
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  )
     .then((res) => res.json())
     .catch((e) => console.log(e));
   setCurrentUserCommentData({
@@ -411,28 +417,34 @@ function handleEdit(newText, replyData, commentData, replyElement) {
   let newReplies = commentData.replies;
   newReplies.splice(index, 1, newReplyData);
 
-  fetch("http://localhost:3000/comments/" + commentData.id, {
-    method: "PATCH",
-    body: JSON.stringify({
-      replies: newReplies,
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  });
+  fetch(
+    `https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentData.id}.json`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        replies: newReplies,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  );
   return newReplies;
 }
 function replyToReply(commentReplies, newReplyData, commentId) {
   //adding the new replies to database :
-  fetch("http://localhost:3000/comments/" + commentId, {
-    method: "PATCH",
-    body: JSON.stringify({
-      replies: [...commentReplies, newReplyData],
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  });
+  fetch(
+    `https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}.json`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        replies: [...commentReplies, newReplyData],
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  );
 }
 export {
   createReplyElement,

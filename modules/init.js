@@ -1,9 +1,11 @@
 import { createCommentElements, createUserCommentElement } from "./comment.js";
-
+import "../style.css";
 let user;
 let currentComment = null;
 let currentUserCommentData = null;
-fetch("http://localhost:3000/currentUser")
+fetch(
+  "https://interactive-comments-70a95-default-rtdb.firebaseio.com/currentUser.json"
+)
   .then((res) => res.json())
   .then((data) => {
     user = data.username;
@@ -11,7 +13,9 @@ fetch("http://localhost:3000/currentUser")
   });
 
 function loadComments() {
-  fetch("http://localhost:3000/comments")
+  fetch(
+    "https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments.json"
+  )
     .then((res) => res.json())
     .then((res) => {
       res.reverse().forEach((comment) => {
@@ -45,14 +49,17 @@ document
       let userNewCommentElement = createUserCommentElement(newCommentData);
       document.querySelector("#container").prepend(userNewCommentElement);
       //fetching data to server
-      fetch("http://localhost:3000/comments", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newCommentData),
-      }).then((res) => res.json());
+      fetch(
+        "https://interactive-comments-70a95-default-rtdb.firebaseio.com/currentUser.json",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCommentData),
+        }
+      ).then((res) => res.json());
     }
   });
 

@@ -229,9 +229,12 @@ function createUserCommentElement(commentData) {
       setTimeout(() => {
         commentElement.remove();
       }, 1000);
-      fetch("http://localhost:3000/comments/" + commentData.id, {
-        method: "DELETE",
-      });
+      fetch(
+        `https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentData.id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
     });
   });
   //handle user edit comment  :
@@ -244,15 +247,18 @@ function createUserCommentElement(commentData) {
         commentElement.querySelector("p.content").innerText;
       editReplyBox.querySelector(".send-edit").innerText = "Edit";
       editReplyBox.querySelector(".send-edit").addEventListener("click", () => {
-        fetch("http://localhost:3000/comments/" + commentData.id, {
-          method: "PATCH",
-          body: JSON.stringify({
-            content: editReplyBox.querySelector("textarea").value,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        });
+        fetch(
+          `https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentData.id}.json`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              content: editReplyBox.querySelector("textarea").value,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
+        );
         commentElement.querySelector("p.content").innerText =
           editReplyBox.querySelector("textarea").value;
         editReplyBox.classList.add("hidden");
